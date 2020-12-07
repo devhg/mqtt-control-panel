@@ -11,5 +11,7 @@ const api = {
   StudentUpdate: '/student/update',
   StudentDelete: '/student/delete',
   StudentUpload: '/student/upload',
+  StudentAnalysis: '/student/analysis',
+  StudentAnalysisCourse: '/student/analysis/course',
 }
 export default api

@@ -34,3 +34,20 @@ export function StudentUpload(parameter) {
     data: parameter
   })
 }
+
+
+export function StudentAnalysis(parameter) {
+  return axios({
+    url: api.StudentAnalysis,
+    method: 'get',
+    params: parameter
+  })
+}
+
+export function StudentAnalysisCourse(parameter) {
+  return axios({
+    url: api.StudentAnalysisCourse,
+    method: 'get',
+    params: parameter
+  })
+}

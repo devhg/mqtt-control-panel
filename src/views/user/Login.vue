@@ -171,7 +171,7 @@ export default {
   created() {
     this.$notification.open({
       message: '说明',
-      description: '本系统前端由ant-design-vue修改而来，后台由springboot开发。',
+      description: '本系统前端由ant-design-vue修改而来，后台由python开发。',
       icon: <a-icon type="smile" style="color: #108ee9" />,
       duration: 4.5,
       btn: (h) => {

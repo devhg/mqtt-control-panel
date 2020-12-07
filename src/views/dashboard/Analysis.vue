@@ -2,7 +2,7 @@
   <div class="page-header-index-wide">
     <a-row :gutter="24">
       <a-col :sm="24" :md="12" :xl="6" :style="{ marginBottom: '24px' }">
-        <chart-card :loading="loading" title="总成绩单数" total="126,560">
+        <chart-card :loading="loading" title="总成绩单数" :total="sum | NumberFormat">
           <a-tooltip title="指标说明" slot="action">
             <a-icon type="info-circle-o" />
           </a-tooltip>
@@ -23,7 +23,7 @@
         </chart-card>
       </a-col>
       <a-col :sm="24" :md="12" :xl="6" :style="{ marginBottom: '24px' }">
-        <chart-card :loading="loading" title="课程数目量" :total="8846 | NumberFormat">
+        <chart-card :loading="loading" title="课程数目量" :total="cNum | NumberFormat">
           <a-tooltip title="指标说明" slot="action">
             <a-icon type="info-circle-o" />
           </a-tooltip>
@@ -37,7 +37,7 @@
         </chart-card>
       </a-col>
       <a-col :sm="24" :md="12" :xl="6" :style="{ marginBottom: '24px' }">
-        <chart-card :loading="loading" title="支付笔数" :total="6560 | NumberFormat">
+        <chart-card :loading="loading" title="优秀人数" :total="goodNum | NumberFormat">
           <a-tooltip title="指标说明" slot="action">
             <a-icon type="info-circle-o" />
           </a-tooltip>
@@ -51,7 +51,7 @@
         </chart-card>
       </a-col>
       <a-col :sm="24" :md="12" :xl="6" :style="{ marginBottom: '24px' }">
-        <chart-card :loading="loading" title="及格率" total="78%">
+        <chart-card :loading="loading" title="及格率" :total="pass">
           <a-tooltip title="指标说明" slot="action">
             <a-icon type="info-circle-o" />
           </a-tooltip>
@@ -77,14 +77,21 @@
         <a-tabs default-active-key="1" size="large" :tab-bar-style="{ marginBottom: '24px', paddingLeft: '16px' }">
           <div class="extra-wrapper" slot="tabBarExtraContent">
             <div class="extra-item">
-              <a>今日</a>
+              <!-- <a>今日</a>
               <a>本周</a>
               <a>本月</a>
-              <a>本年</a>
+              <a>本年</a> -->
+              <a-input-search
+                style="width: 300px; margin-top: 10px"
+                placeholder="输入课程名如：python"
+                enter-button
+                @search="onSearch"
+              />
             </div>
             <a-range-picker :style="{ width: '256px' }" />
           </div>
-          <a-tab-pane loading="true" tab="python程序设计" key="1">
+
+          <a-tab-pane loading="true" tab="成绩分析" key="1">
             <a-row>
               <a-col :xl="16" :lg="12" :md="12" :sm="24" :xs="24">
                 <bar :data="barData" title="成绩分布" />
@@ -94,131 +101,19 @@
               </a-col>
             </a-row>
           </a-tab-pane>
-          <a-tab-pane tab="java程序设计" key="2">
+          <!-- <a-tab-pane tab="java程序设计" key="2">
             <a-row>
               <a-col :xl="16" :lg="12" :md="12" :sm="24" :xs="24">
-                <bar :data="barData2" title="销售额趋势" />
+                <bar :data="barData2" title="成绩分布" />
               </a-col>
               <a-col :xl="8" :lg="12" :md="12" :sm="24" :xs="24">
                 <rank-list title="班级及格率排行" :list="rankList" />
               </a-col>
             </a-row>
-          </a-tab-pane>
+          </a-tab-pane> -->
         </a-tabs>
       </div>
     </a-card>
-
-    <div class="antd-pro-pages-dashboard-analysis-twoColLayout" :class="isDesktop() ? 'desktop' : ''">
-      <a-row :gutter="24" type="flex" :style="{ marginTop: '24px' }">
-        <a-col :xl="12" :lg="24" :md="24" :sm="24" :xs="24">
-          <a-card :loading="loading" :bordered="false" title="广告流量分析" :style="{ height: '100%' }">
-            <a-dropdown :trigger="['click']" placement="bottomLeft" slot="extra">
-              <a class="ant-dropdown-link" href="#">
-                <a-icon type="ellipsis" />
-              </a>
-              <a-menu slot="overlay">
-                <a-menu-item>
-                  <a href="javascript:;">操作一</a>
-                </a-menu-item>
-                <a-menu-item>
-                  <a href="javascript:;">操作二</a>
-                </a-menu-item>
-              </a-menu>
-            </a-dropdown>
-            <a-row :gutter="68">
-              <a-col :xs="24" :sm="12" :style="{ marginBottom: ' 24px' }">
-                <number-info :total="12321" :sub-total="17.1">
-                  <span slot="subtitle">
-                    <span>搜索用户数</span>
-                    <a-tooltip title="指标说明" slot="action">
-                      <a-icon type="info-circle-o" :style="{ marginLeft: '8px' }" />
-                    </a-tooltip>
-                  </span>
-                </number-info>
-                <!-- miniChart -->
-                <div>
-                  <mini-smooth-area :style="{ height: '45px' }" :dataSource="searchUserData" :scale="searchUserScale" />
-                </div>
-              </a-col>
-              <a-col :xs="24" :sm="12" :style="{ marginBottom: ' 24px' }">
-                <number-info :total="2.7" :sub-total="26.2" status="down">
-                  <span slot="subtitle">
-                    <span>人均搜索次数</span>
-                    <a-tooltip title="指标说明" slot="action">
-                      <a-icon type="info-circle-o" :style="{ marginLeft: '8px' }" />
-                    </a-tooltip>
-                  </span>
-                </number-info>
-                <!-- miniChart -->
-                <div>
-                  <mini-smooth-area :style="{ height: '45px' }" :dataSource="searchUserData" :scale="searchUserScale" />
-                </div>
-              </a-col>
-            </a-row>
-            <div class="ant-table-wrapper">
-              <a-table
-                row-key="index"
-                size="small"
-                :columns="searchTableColumns"
-                :dataSource="searchData"
-                :pagination="{ pageSize: 5 }"
-              >
-                <span slot="range" slot-scope="text, record">
-                  <trend :flag="record.status === 0 ? 'up' : 'down'">{{ text }}%</trend>
-                </span>
-              </a-table>
-            </div>
-          </a-card>
-        </a-col>
-        <a-col :xl="12" :lg="24" :md="24" :sm="24" :xs="24">
-          <a-card
-            class="antd-pro-pages-dashboard-analysis-salesCard"
-            :loading="loading"
-            :bordered="false"
-            title="销售额类别占比"
-            :style="{ height: '100%' }"
-          >
-            <div slot="extra" style="height: inherit">
-              <!-- style="bottom: 12px;display: inline-block;" -->
-              <span class="dashboard-analysis-iconGroup">
-                <a-dropdown :trigger="['click']" placement="bottomLeft">
-                  <a-icon type="ellipsis" class="ant-dropdown-link" />
-                  <a-menu slot="overlay">
-                    <a-menu-item>
-                      <a href="javascript:;">操作一</a>
-                    </a-menu-item>
-                    <a-menu-item>
-                      <a href="javascript:;">操作二</a>
-                    </a-menu-item>
-                  </a-menu>
-                </a-dropdown>
-              </span>
-              <div class="analysis-salesTypeRadio">
-                <a-radio-group defaultValue="a">
-                  <a-radio-button value="a">全部渠道</a-radio-button>
-                  <a-radio-button value="b">线上</a-radio-button>
-                  <a-radio-button value="c">门店</a-radio-button>
-                </a-radio-group>
-              </div>
-            </div>
-            <h4>销售额</h4>
-            <div>
-              <!-- style="width: calc(100% - 240px);" -->
-              <div>
-                <v-chart :force-fit="true" :height="405" :data="pieData" :scale="pieScale">
-                  <v-tooltip :showTitle="false" data-key="item*percent" />
-                  <v-axis />
-                  <!-- position="right" :offsetX="-140" -->
-                  <v-legend data-key="item" />
-                  <v-pie position="percent" color="item" :vStyle="pieStyle" />
-                  <v-coord type="theta" :radius="0.75" :innerRadius="0.6" />
-                </v-chart>
-              </div>
-            </div>
-          </a-card>
-        </a-col>
-      </a-row>
-    </div>
   </div>
 </template>
 
@@ -237,18 +132,18 @@ import {
 } from '@/components'
 import { mixinDevice } from '@/utils/mixin'
 
-const barData = []
-const barData2 = []
-for (let i = 0; i < 12; i += 1) {
-  barData.push({
-    x: `${i + 1}月`,
-    y: Math.floor(Math.random() * 1000) + 200,
-  })
-  barData2.push({
-    x: `${i + 1}月`,
-    y: Math.floor(Math.random() * 1000) + 200,
-  })
-}
+// const barData = []
+// const barData2 = []
+// for (let i = 0; i < 12; i += 1) {
+//   barData.push({
+//     x: `${i + 1}月`,
+//     y: Math.floor(Math.random() * 1000) + 200,
+//   })
+//   barData2.push({
+//     x: `${i + 1}月`,
+//     y: Math.floor(Math.random() * 1000) + 200,
+//   })
+// }
 
 const rankList = []
 for (let i = 0; i < 7; i++) {
@@ -265,52 +160,6 @@ for (let i = 0; i < 7; i++) {
     y: Math.ceil(Math.random() * 10),
   })
 }
-const searchUserScale = [
-  {
-    dataKey: 'x',
-    alias: '时间',
-  },
-  {
-    dataKey: 'y',
-    alias: '用户数',
-    min: 0,
-    max: 10,
-  },
-]
-
-const searchTableColumns = [
-  {
-    dataIndex: 'index',
-    title: '排名',
-    width: 90,
-  },
-  {
-    dataIndex: 'keyword',
-    title: '搜索关键词',
-  },
-  {
-    dataIndex: 'count',
-    title: '用户数',
-  },
-  {
-    dataIndex: 'range',
-    title: '周涨幅',
-    align: 'right',
-    sorter: (a, b) => a.range - b.range,
-    scopedSlots: { customRender: 'range' },
-  },
-]
-const searchData = []
-for (let i = 0; i < 50; i += 1) {
-  searchData.push({
-    index: i + 1,
-    keyword: `搜索关键词-${i}`,
-    count: Math.floor(Math.random() * 1000),
-    range: Math.floor(Math.random() * 100),
-    status: Math.floor((Math.random() * 10) % 2),
-  })
-}
-
 const DataSet = require('@antv/data-set')
 
 const sourceData = [
@@ -339,6 +188,8 @@ dv.transform({
 })
 const pieData = dv.rows
 
+import { StudentAnalysis, StudentAnalysisCourse } from '@/api/manage'
+
 export default {
   name: 'Analysis',
   mixins: [mixinDevice],
@@ -355,22 +206,19 @@ export default {
   },
   data() {
     return {
+      goodNum: 2,
+      cNum: 2,
+      sum: 1,
+      pass: '0%',
       loading: true,
       rankList,
 
-      // 搜索用户数
-      searchUserData,
-      searchUserScale,
-      searchTableColumns,
-      searchData,
-
-      barData,
-      barData2,
+      barData: [],
+      barData2: [],
 
       //
       pieScale,
       pieData,
-      sourceData,
       pieStyle: {
         stroke: '#fff',
         lineWidth: 1,
@@ -378,9 +226,47 @@ export default {
     }
   },
   created() {
-    setTimeout(() => {
-      this.loading = !this.loading
-    }, 1000)
+    // this.loading = !this.loading
+    StudentAnalysis()
+      .then((res) => {
+        console.log(res)
+        this.cNum = res.cNum
+        this.goodNum = res.goodNum
+        this.sum = res.sum
+        this.pass = Math.round((res.gt60 / res.sum) * 100) + '%'
+      })
+      .catch((e) => {
+        this.$message.error('网络异常')
+      })
+    this.loading = !this.loading
+    // setTimeout(() => {
+    //   this.loading = !this.loading
+    // }, 1000)
+    this.getCourse('python程序设计')
+    // this.getCourse('java程序设计')
+  },
+  methods: {
+    onSearch(value) {
+      console.log(value)
+      this.getCourse(value)
+    },
+    getCourse(course) {
+      var that = this
+      StudentAnalysisCourse({ course: course })
+        .then((res) => {
+          var l = ['不合格<60', '中等60-70', '良好70-90', '优秀>90']
+          this.barData = []
+          for (var i in l) {
+            this.barData.push({
+              x: l[i],
+              y: res[l[i]],
+            })
+          }
+        })
+        .catch((e) => {
+          this.$message.error('网络异常')
+        })
+    },
   },
 }
 </script>

@@ -5,10 +5,10 @@
         <div class="header">
           <a href="/">
             <img src="~@/assets/logo.svg" class="logo" alt="logo" />
-            <span class="title">酒店管理系统</span>
+            <span class="title">学生成绩管理系统</span>
           </a>
         </div>
-        <div class="desc">Ant Hotel 是国内最具影响力的 智慧酒店 解决方案</div>
+        <div class="desc">国内最具影响力的 智慧办公 解决方案</div>
       </div>
 
       <route-view></route-view>
@@ -41,7 +41,7 @@ export default {
   },
   beforeDestroy() {
     document.body.classList.remove('userLayout')
-  }
+  },
 }
 </script>
 
