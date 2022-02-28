@@ -86,13 +86,20 @@ const vueConfig = {
     // development server port 8000
     port: 8000,
     // If you want to turn on the proxy, please remove the mockjs /src/main.jsL11
-    // proxy: {
-    //   '/api': {
-    //     target: 'https://mock.ihx.me/mock/5baf3052f7da7e07e04a5116/antd-pro',
-    //     ws: false,
-    //     changeOrigin: true
-    //   }
-    // }
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8922',
+        ws: false,
+        changeOrigin: true,
+        pathRewrite: {
+          //这个重写不可省略！因为我们真正请求的地址并不含 /api
+          '^/api': '',
+          /* 当我们在浏览器中看到请求的地址为：http://localhost:8080/api/data/getdata 时
+              因为重写了 /api ，所以实际上访问的地址是：http://x.x.x.x:x/data/getdata，
+              */
+        },
+      },
+    },
   },
 
   // disable source map in production

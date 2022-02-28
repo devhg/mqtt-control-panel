@@ -8,7 +8,7 @@ import { ACCESS_TOKEN } from '@/store/mutation-types'
 // 创建 axios 实例
 const service = axios.create({
   // baseURL: process.env.VUE_APP_API_BASE_URL, // api base_url
-  baseURL: 'http://127.0.0.1:8081/',
+  baseURL: 'http://127.0.0.1:8000/',
   timeout: 6000, // 请求超时时间
 })
 
@@ -49,7 +49,7 @@ service.interceptors.request.use((config) => {
 
 // response interceptor
 service.interceptors.response.use((response) => {
-  console.log(response)
+  //   console.log(response)
   return response.data
 }, err)
 

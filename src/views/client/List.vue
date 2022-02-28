@@ -127,7 +127,7 @@ import moment from 'moment'
 // import { STable, Ellipsis } from '@/components'
 import StepByStepModal from '@/views/list/modules/StepByStepModal'
 import CreateForm from '@/views/list/modules/CreateForm'
-import { getStudentList, StudentUpdate, StudentDelete, StudentUpload } from '@/api/manage'
+import { getBlackIPList, StudentUpdate, StudentDelete, StudentUpload } from '@/api/manage'
 import ExportJsonExcel from 'js-export-excel'
 
 export default {

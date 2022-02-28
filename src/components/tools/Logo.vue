@@ -18,7 +18,7 @@ export default {
   props: {
     title: {
       type: String,
-      default: '学生成绩管理',
+      default: 'MQTT Panel',
       required: false,
     },
     showTitle: {

@@ -3,19 +3,19 @@
     <div class="table-page-search-wrapper">
       <a-form layout="inline">
         <a-row :gutter="48">
-          <a-col :md="8" :sm="24">
-            <a-form-item label="班级">
-              <a-input placeholder="如：计科1806" v-model="queryParam.class" />
+          <a-col :md="7" :sm="24">
+            <a-form-item label="IP">
+              <a-input placeholder="如：127.0.0.1" v-model="queryParam.ip" />
             </a-form-item>
           </a-col>
-          <a-col :md="8" :sm="24">
-            <a-form-item label="课程">
-              <a-input placeholder="如:python程序设计" v-model="queryParam.course" />
+          <a-col :md="7" :sm="24">
+            <a-form-item label="操作人">
+              <a-input placeholder="如：root" v-model="queryParam.opUser" />
             </a-form-item>
           </a-col>
           <a-col :md="4" :sm="24">
             <span class="table-page-search-submitButtons">
-              <a-button type="primary" @click="vueTable(queryParam)">
+              <a-button type="primary" @click="fetchData(queryParam)">
                 查询
                 <a-icon type="zoom-in" />
               </a-button>
@@ -24,18 +24,6 @@
                 <a-icon type="redo" />
               </a-button>
             </span>
-          </a-col>
-        </a-row>
-        <a-row :gutter="48">
-          <a-col :md="8" :sm="24">
-            <a-form-item label="学号">
-              <a-input placeholder="16位学号" v-model="queryParam.uid" />
-            </a-form-item>
-          </a-col>
-          <a-col :md="8" :sm="24">
-            <a-form-item label="姓名">
-              <a-input placeholder="" v-model="queryParam.uname" />
-            </a-form-item>
           </a-col>
           <a-col :md="4" :sm="24">
             <input
@@ -60,29 +48,26 @@
       </a-form>
     </div>
 
+    <!-- modal -->
     <div class="table-operator">
-      <a-modal title="导入记录" :visible="modalShow" @ok="insertSubmit(edit)" @cancel="insertCancel()">
+      <a-modal title="修改记录" :visible="modalShow" @ok="updateSubmit(edit)" @cancel="insertCancel()">
         <a-form layout="horizontal">
           <a-form-item label="记录编号" :label-col="formLayout.labelCol" :wrapper-col="formLayout.wrapperCol">
-            <a-input disabled v-model="edit.courseId" name="orderId" />
+            <a-input disabled v-model="edit.id" name="id" />
           </a-form-item>
-          <a-form-item label="课程编号" :label-col="formLayout.labelCol" :wrapper-col="formLayout.wrapperCol">
-            <a-input disabled v-model="edit.courseId" name="orderId" />
+          <a-form-item label="IP地址" :label-col="formLayout.labelCol" :wrapper-col="formLayout.wrapperCol">
+            <a-input v-model="edit.ip" name="ip" />
           </a-form-item>
-          <a-form-item label="课程名字" :label-col="formLayout.labelCol" :wrapper-col="formLayout.wrapperCol">
-            <a-input disabled v-model="edit.courseName" name="userId" />
+          <a-form-item label="状态" :label-col="formLayout.labelCol" :wrapper-col="formLayout.wrapperCol">
+            <!-- <a-input v-model="edit.status" name="status" /> -->
+            <!-- <a-radio :value="edit.status">开启</a-radio> -->
+            <a-radio-group name="radioGroup" v-model="edit.status" :default-value="edit.status">
+              <a-radio :value="1">开启</a-radio>
+              <a-radio :value="0">关闭</a-radio>
+            </a-radio-group>
           </a-form-item>
-          <a-form-item disabled label="班级" :label-col="formLayout.labelCol" :wrapper-col="formLayout.wrapperCol">
-            <a-input v-model="edit.class" name="userId" />
-          </a-form-item>
-          <a-form-item label="学号" :label-col="formLayout.labelCol" :wrapper-col="formLayout.wrapperCol">
-            <a-input v-model="edit.uid" name="userId" />
-          </a-form-item>
-          <a-form-item label="姓名" :label-col="formLayout.labelCol" :wrapper-col="formLayout.wrapperCol">
-            <a-input v-model="edit.uname" name="userId" />
-          </a-form-item>
-          <a-form-item label="成绩" :label-col="formLayout.labelCol" :wrapper-col="formLayout.wrapperCol">
-            <a-input v-model="edit.score" />
+          <a-form-item label="操作人" :label-col="formLayout.labelCol" :wrapper-col="formLayout.wrapperCol">
+            <a-input v-model="edit.op_user" name="op_user" />
           </a-form-item>
         </a-form>
       </a-modal>
@@ -92,8 +77,6 @@
             <a-icon type="delete" />
             删除
           </a-menu-item>
-          <!-- lock | unlock -->
-          <!-- <a-menu-item key="2"> <a-icon type="lock" />锁定 </a-menu-item> -->
         </a-menu>
         <a-button style="margin-left: 8px">
           批量操作
@@ -101,6 +84,8 @@
         </a-button>
       </a-dropdown>
     </div>
+
+    <!-- table -->
     <a-table
       id="table"
       :row-selection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }"
@@ -112,10 +97,15 @@
       @change="handleChange"
     >
       <span slot="status" slot-scope="status, record">
-        <a-tag :color="record.score < 60 ? 'volcano' : 'green'">{{ record.score &lt; 60 ? '挂科' : '及格' }}</a-tag>
+        <a-tag :color="record.status == 1 ? 'green' : 'volcano'">{{ record.status == 1 ? '开启' : '关闭' }}</a-tag>
       </span>
       <span slot="action" slot-scope="text, record">
-        <template><a-tag @click="handleEdit(record)">修改</a-tag></template>
+        <template>
+          <a-tag @click="handleEdit(record)">修改</a-tag>
+          <a-popconfirm title="你想删除这条记录吗？" ok-text="Yes" cancel-text="No" @confirm="handleDelete">
+            <a-tag color="orange">删除</a-tag>
+          </a-popconfirm>
+        </template>
       </span>
     </a-table>
     <step-by-step-modal ref="modal" @ok="handleOk" />
@@ -127,11 +117,39 @@ import moment from 'moment'
 // import { STable, Ellipsis } from '@/components'
 import StepByStepModal from '@/views/list/modules/StepByStepModal'
 import CreateForm from '@/views/list/modules/CreateForm'
-import { getStudentList, StudentUpdate, StudentDelete, StudentUpload } from '@/api/manage'
+import { getBlackIPList, StudentUpdate, StudentDelete, StudentUpload } from '@/api/manage'
 import ExportJsonExcel from 'js-export-excel'
 
+const columns = [
+  {
+    title: '记录编号',
+    dataIndex: 'id',
+    sorter: (a, b) => a.id - b.id,
+    // sortOrder: sortedInfo.columnKey === 'id' && sortedInfo.order,
+  },
+  { title: 'IP地址', dataIndex: 'ip' },
+  { title: '操作人', dataIndex: 'op_user' },
+  {
+    title: '创建时间',
+    dataIndex: 'createTime',
+    sorter: (a, b) => a.createTime - b.createTime,
+    // sortOrder: sortedInfo.columnKey === 'signTime' && sortedInfo.order,
+    customRender: (val) => {
+      return moment(val).format('YYYY-MM-DD HH:mm:ss')
+    },
+  },
+  { title: '状态', dataIndex: 'status', scopedSlots: { customRender: 'status' } },
+  {
+    title: '操作',
+    dataIndex: 'action',
+    width: '200px',
+    align: 'center',
+    scopedSlots: { customRender: 'action' },
+  },
+]
+
 export default {
-  name: 'TableList',
+  name: 'BlackIPList',
   components: {
     CreateForm,
     StepByStepModal,
@@ -141,69 +159,6 @@ export default {
       let { sortedInfo, filteredInfo } = this
       sortedInfo = sortedInfo || {}
       filteredInfo = filteredInfo || {}
-      const columns = [
-        {
-          title: '编号',
-          dataIndex: 'id',
-          sorter: (a, b) => a.id - b.id,
-          sortOrder: sortedInfo.columnKey === 'id' && sortedInfo.order,
-        },
-        {
-          title: '课程编号',
-          dataIndex: 'courseId',
-        },
-        {
-          title: '课程名字',
-          dataIndex: 'courseName',
-        },
-        {
-          title: '专业',
-          dataIndex: 'major',
-        },
-        {
-          title: '班级',
-          dataIndex: 'class',
-        },
-        {
-          title: '学号',
-          dataIndex: 'uid',
-          sorter: (a, b) => a.uid - b.uid,
-          sortOrder: sortedInfo.columnKey === 'uid' && sortedInfo.order,
-        },
-        {
-          title: '姓名',
-          dataIndex: 'uname',
-        },
-        {
-          title: '成绩',
-          dataIndex: 'score',
-          sorter: (a, b) => a.score - b.score,
-          sortOrder: sortedInfo.columnKey === 'score' && sortedInfo.order,
-        },
-        {
-          title: '录入时间',
-          dataIndex: 'signTime',
-          sorter: (a, b) => a.signTime - b.signTime,
-          sortOrder: sortedInfo.columnKey === 'signTime' && sortedInfo.order,
-          customRender: (val) => {
-            return moment(val).format('YYYY-MM-DD HH:mm:ss')
-          },
-        },
-        {
-          title: '状态',
-          dataIndex: 'status',
-          width: '10px',
-          align: 'center',
-          scopedSlots: { customRender: 'status' },
-        },
-        {
-          title: '操作',
-          dataIndex: 'action',
-          width: '60px',
-          align: 'center',
-          scopedSlots: { customRender: 'action' },
-        },
-      ]
       return columns
     },
   },
@@ -247,47 +202,43 @@ export default {
     },
   },
   created() {
-    this.vueTable({})
+    this.fetchData({})
   },
   methods: {
     handleEdit(record) {
       this.modalShow = !this.modalShow
       this.edit = record
     },
-    showModal() {
-      this.modalShow = true
+    handleDelete(e) {
+      this.$message.success('Click on Yes')
     },
-    insertSubmit(data) {
+    updateSubmit(data) {
       console.log(data)
-      const uname = data.uname
-      StudentUpdate({
-        id: data.id,
-        class: data.class,
-        uid: data.uid,
-        name: data.uname,
-        score: data.score,
-      })
-        .then((res) => {
-          console.log(res)
-          this.$message.info(`${uname} 信息更新成功`)
-        })
-        .catch((e) => {
-          this.$message.error(`${uname} 信息更新失败`)
-        })
+      const uname = data.ip
+      //   StudentUpdate({
+      //     id: data.id,
+      //   })
+      //     .then((res) => {
+      //       console.log(res)
+      //       this.$message.info(`${uname} 信息更新成功`)
+      //     })
+      //     .catch((e) => {
+      //       this.$message.error(`${uname} 信息更新失败`)
+      //     })
       this.insertCancel()
-      this.vueTable({})
     },
     insertCancel() {
+      this.fetchData({})
       this.modalShow = !this.modalShow
     },
-    vueTable(param) {
+    fetchData(param) {
       this.loading = true
       this.courseName = param.course == undefined ? this.courseName : param.course
       console.log(this.courseName)
-      getStudentList({ class: param.class, course: param.course, uid: param.uid, uname: param.uname })
+      getBlackIPList({ class: param.class, course: param.course, uid: param.uid, uname: param.uname })
         .then((res) => {
-          console.log(res)
-          this.loadData = res
+          this.loadData = res.result
+          console.log(this.loadData)
           this.loading = false
         })
         .catch((e) => {
@@ -319,7 +270,7 @@ export default {
           this.$message.error(`批量删除失败`)
         })
       this.selectedRowKeys = []
-      this.vueTable({})
+      this.fetchData({})
     },
     handleChange(pagination, filters, sorter) {
       console.log('Various parameters', pagination, filters, sorter)
@@ -385,7 +336,7 @@ export default {
           .then((res) => {
             console.log(res)
             this.$message.info(`批量导入成功`)
-            this.vueTable({})
+            this.fetchData({})
           })
           .catch((e) => {
             this.$message.error(`批量导入失败`)

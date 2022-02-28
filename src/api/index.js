@@ -7,8 +7,9 @@ const api = {
   SendSms: '/account/sms',
   SendSmsErr: '/account/sms_err',
 
-  StudentList: '/student/list',
-  StudentUpdate: '/student/update',
+  BlackIPList: '/api/blackip/list',
+  BlackIPCreate: '/api/blackip/create',
+
   StudentDelete: '/student/delete',
   StudentUpload: '/student/upload',
   StudentAnalysis: '/student/analysis',

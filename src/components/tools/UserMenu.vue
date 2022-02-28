@@ -24,15 +24,15 @@
             </router-link>
           </a-menu-item>
           <a-menu-item key="1">
-            <router-link :to="{ name: 'settings' }">
+            <router-link :to="{ name: '404' }">
               <a-icon type="setting" />
               <span>账户设置</span>
             </router-link>
           </a-menu-item>
-          <a-menu-item key="2" disabled>
+          <!-- <a-menu-item key="2" disabled>
             <a-icon type="setting" />
             <span>测试</span>
-          </a-menu-item>
+          </a-menu-item> -->
           <a-menu-divider />
           <a-menu-item key="3">
             <a href="javascript:;" @click="handleLogout">

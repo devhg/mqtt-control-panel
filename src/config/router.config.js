@@ -7,9 +7,7 @@ export const asyncRouterMap = [
     path: '/',
     name: 'index',
     component: BasicLayout,
-    meta: {
-      title: '首页',
-    },
+    meta: { title: '首页' },
     redirect: '/dashboard/workplace',
     children: [
       // dashboard
@@ -19,7 +17,7 @@ export const asyncRouterMap = [
         redirect: '/dashboard/workplace',
         component: RouteView,
         meta: {
-          title: '数据分析',
+          title: 'dashboard',
           keepAlive: true,
           icon: bxAnaalyse,
           permission: ['dashboard'],
@@ -35,16 +33,6 @@ export const asyncRouterMap = [
               permission: ['dashboard'],
             },
           },
-          // 外部链接
-          // {
-          //   path: '/oth',
-          //   redirect: '/404',
-          //   name: 'Monitor',
-          //   meta: {
-          //     title: '监控页（外部）',
-          //     target: '_blank'
-          //   }
-          // },
           {
             path: '/dashboard/workplace',
             name: 'Workplace',
@@ -57,53 +45,120 @@ export const asyncRouterMap = [
           },
         ],
       },
-      // 学生管理 list
+      // 服务监控
       {
-        path: '/student',
+        path: '/monitor',
         name: 'list',
         component: PageView,
-        redirect: '/student/userList',
+        redirect: '/monitor/packet',
         meta: {
-          title: '成绩管理',
-          icon: 'table',
+          title: '服务监控',
+          icon: 'fund',
           permission: ['table'],
         },
         children: [
           {
-            path: '/student/userList/:pageNo([1-9]\\d*)?',
-            name: 'UserListWrapper',
+            path: '/monitor/packet',
+            name: 'PacketMonitor',
             hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
-            component: () => import('@/views/student/UserList'),
+            component: () => import('@/views/monitor/packet/index.vue'),
             meta: {
-              title: '学生列表',
+              title: '报文监控',
               keepAlive: true,
               permission: ['table'],
             },
           },
-          // {
-          //   path: '/student/record',
-          //   name: 'InWrapper',
-          //   hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
-          //   component: () => import('@/views/student/Record'),
-          //   meta: {
-          //     title: '进出记录',
-          //     keepAlive: true,
-          //     permission: ['table']
-          //   },
-          // },
           {
-            path: '/student/UserDetail',
-            name: 'UserAdvanced',
-            hidden: true,
-            component: () => import('@/views/student/advanced/UserAdvanced'),
+            path: '/monitor/flow',
+            name: 'FlowMonitor',
+            // hidden: true,
+            component: () => import('@/views/monitor/flow/index.vue'),
             meta: {
               keepAlive: false,
-              title: '用户详情',
+              title: '流量监控',
+            },
+          },
+          {
+            path: '/monitor/route',
+            name: 'RouteMonitor',
+            // hidden: true,
+            component: () => import('@/views/monitor/route/index.vue'),
+            meta: {
+              keepAlive: false,
+              title: '链路监控',
             },
           },
         ],
       },
-      // 关于酒店
+      // 连接管理
+      {
+        path: '/connection',
+        name: 'Connection',
+        component: PageView,
+        redirect: '/connection/session',
+        meta: {
+          title: '连接管理',
+          icon: 'api',
+          permission: ['table'],
+        },
+        children: [
+          {
+            path: '/connection/blacklist',
+            name: 'BlackList',
+            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
+            component: () => import('@/views/connection/ip-black-list/Index.vue'),
+            meta: {
+              title: 'IP黑名单',
+              keepAlive: true,
+              permission: ['table'],
+            },
+          },
+          {
+            path: '/connection/session',
+            name: 'Session',
+            component: () => import('@/views/connection/session/index.vue'),
+            meta: {
+              keepAlive: false,
+              title: '会话管理',
+            },
+          },
+        ],
+      },
+      // 客户端管理
+      {
+        path: '/client',
+        name: 'Client',
+        component: PageView,
+        redirect: '/student/userList',
+        meta: {
+          title: '客户端管理',
+          icon: 'usergroup-add',
+          permission: ['table'],
+        },
+        children: [
+          {
+            path: '/client/list',
+            name: 'UserListWrapper',
+            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
+            component: () => import('@/views/client/List.vue'),
+            meta: {
+              title: '用户列表',
+              keepAlive: true,
+              permission: ['table'],
+            },
+          },
+          {
+            path: '/client/register',
+            name: 'UserAdvanced',
+            component: () => import('@/views/client/List.vue'),
+            meta: {
+              keepAlive: false,
+              title: '用户注册',
+            },
+          },
+        ],
+      },
+      // 关于系统
       {
         path: '/about',
         name: 'about',
@@ -114,6 +169,31 @@ export const asyncRouterMap = [
           permission: ['profile'],
         },
         component: () => import('@/views/profile/basic/Index.vue'),
+      },
+      // account
+      {
+        path: '/account',
+        component: RouteView,
+        redirect: '/account/center',
+        hidden: true,
+        name: 'account',
+        meta: { title: '账户', icon: 'user', keepAlive: true, permission: ['user'] },
+        children: [
+          {
+            path: '/account/center',
+            name: 'center',
+            component: () => import('@/views/account/center'),
+            meta: { title: '个人中心', keepAlive: true, permission: ['user'] },
+          },
+          {
+            path: '/account/settings',
+            name: 'settings',
+            component: () => import('@/views/account/settings/Index'),
+            meta: { title: '账户设置', hideHeader: true, permission: ['user'] },
+            // redirect: '/account/settings/basic',
+            hideChildrenInMenu: true,
+          },
+        ],
       },
     ],
   },
@@ -159,6 +239,7 @@ export const constantRouterMap = [
   },
   {
     path: '/404',
+    name: '404',
     component: () => import(/* webpackChunkName: "fail" */ '@/views/result/exception/404'),
   },
 ]
