@@ -7,7 +7,7 @@
             <a-icon type="info-circle-o" />
           </a-tooltip>
           <div>
-            <trend flag="up" style="margin-right: 16px;">
+            <trend flag="up" style="margin-right: 16px">
               <span slot="term">周同比</span>
               12%
             </trend>
@@ -59,7 +59,7 @@
             <mini-progress color="rgb(19, 194, 194)" :target="80" :percentage="78" height="8px" />
           </div>
           <template slot="footer">
-            <trend flag="down" style="margin-right: 16px;">
+            <trend flag="down" style="margin-right: 16px">
               <span slot="term">同周比</span>
               12%
             </trend>
@@ -72,13 +72,9 @@
       </a-col>
     </a-row>
 
-    <a-card :loading="loading" :bordered="false" :body-style="{padding: '0'}">
+    <a-card :loading="loading" :bordered="false" :body-style="{ padding: '0' }">
       <div class="salesCard">
-        <a-tabs
-          default-active-key="1"
-          size="large"
-          :tab-bar-style="{marginBottom: '24px', paddingLeft: '16px'}"
-        >
+        <a-tabs default-active-key="1" size="large" :tab-bar-style="{ marginBottom: '24px', paddingLeft: '16px' }">
           <div class="extra-wrapper" slot="tabBarExtraContent">
             <div class="extra-item">
               <a>今日</a>
@@ -86,7 +82,7 @@
               <a>本月</a>
               <a>本年</a>
             </div>
-            <a-range-picker :style="{width: '256px'}" />
+            <a-range-picker :style="{ width: '256px' }" />
           </div>
           <a-tab-pane loading="true" tab="销售额" key="1">
             <a-row>
@@ -112,10 +108,7 @@
       </div>
     </a-card>
 
-    <div
-      class="antd-pro-pages-dashboard-analysis-twoColLayout"
-      :class="isDesktop() ? 'desktop' : ''"
-    >
+    <div class="antd-pro-pages-dashboard-analysis-twoColLayout" :class="isDesktop() ? 'desktop' : ''">
       <a-row :gutter="24" type="flex" :style="{ marginTop: '24px' }">
         <a-col :xl="12" :lg="24" :md="24" :sm="24" :xs="24">
           <a-card :loading="loading" :bordered="false" title="广告流量分析" :style="{ height: '100%' }">
@@ -133,7 +126,7 @@
               </a-menu>
             </a-dropdown>
             <a-row :gutter="68">
-              <a-col :xs="24" :sm="12" :style="{ marginBottom: ' 24px'}">
+              <a-col :xs="24" :sm="12" :style="{ marginBottom: ' 24px' }">
                 <number-info :total="12321" :sub-total="17.1">
                   <span slot="subtitle">
                     <span>搜索用户数</span>
@@ -144,14 +137,10 @@
                 </number-info>
                 <!-- miniChart -->
                 <div>
-                  <mini-smooth-area
-                    :style="{ height: '45px' }"
-                    :dataSource="searchUserData"
-                    :scale="searchUserScale"
-                  />
+                  <mini-smooth-area :style="{ height: '45px' }" :dataSource="searchUserData" :scale="searchUserScale" />
                 </div>
               </a-col>
-              <a-col :xs="24" :sm="12" :style="{ marginBottom: ' 24px'}">
+              <a-col :xs="24" :sm="12" :style="{ marginBottom: ' 24px' }">
                 <number-info :total="2.7" :sub-total="26.2" status="down">
                   <span slot="subtitle">
                     <span>人均搜索次数</span>
@@ -162,11 +151,7 @@
                 </number-info>
                 <!-- miniChart -->
                 <div>
-                  <mini-smooth-area
-                    :style="{ height: '45px' }"
-                    :dataSource="searchUserData"
-                    :scale="searchUserScale"
-                  />
+                  <mini-smooth-area :style="{ height: '45px' }" :dataSource="searchUserData" :scale="searchUserScale" />
                 </div>
               </a-col>
             </a-row>
@@ -193,7 +178,7 @@
             title="销售额类别占比"
             :style="{ height: '100%' }"
           >
-            <div slot="extra" style="height: inherit;">
+            <div slot="extra" style="height: inherit">
               <!-- style="bottom: 12px;display: inline-block;" -->
               <span class="dashboard-analysis-iconGroup">
                 <a-dropdown :trigger="['click']" placement="bottomLeft">
@@ -248,7 +233,7 @@ import {
   Bar,
   Trend,
   NumberInfo,
-  MiniSmoothArea
+  MiniSmoothArea,
 } from '@/components'
 import { mixinDevice } from '@/utils/mixin'
 
@@ -257,11 +242,11 @@ const barData2 = []
 for (let i = 0; i < 12; i += 1) {
   barData.push({
     x: `${i + 1}月`,
-    y: Math.floor(Math.random() * 1000) + 200
+    y: Math.floor(Math.random() * 1000) + 200,
   })
   barData2.push({
     x: `${i + 1}月`,
-    y: Math.floor(Math.random() * 1000) + 200
+    y: Math.floor(Math.random() * 1000) + 200,
   })
 }
 
@@ -269,53 +254,51 @@ const rankList = []
 for (let i = 0; i < 7; i++) {
   rankList.push({
     name: '淄博市张店区 ' + (i + 1) + ' 号店',
-    total: 1234.56 - i * 100
+    total: 1234.56 - i * 100,
   })
 }
 
 const searchUserData = []
 for (let i = 0; i < 7; i++) {
   searchUserData.push({
-    x: moment()
-      .add(i, 'days')
-      .format('YYYY-MM-DD'),
-    y: Math.ceil(Math.random() * 10)
+    x: moment().add(i, 'days').format('YYYY-MM-DD'),
+    y: Math.ceil(Math.random() * 10),
   })
 }
 const searchUserScale = [
   {
     dataKey: 'x',
-    alias: '时间'
+    alias: '时间',
   },
   {
     dataKey: 'y',
     alias: '用户数',
     min: 0,
-    max: 10
-  }
+    max: 10,
+  },
 ]
 
 const searchTableColumns = [
   {
     dataIndex: 'index',
     title: '排名',
-    width: 90
+    width: 90,
   },
   {
     dataIndex: 'keyword',
-    title: '搜索关键词'
+    title: '搜索关键词',
   },
   {
     dataIndex: 'count',
-    title: '用户数'
+    title: '用户数',
   },
   {
     dataIndex: 'range',
     title: '周涨幅',
     align: 'right',
     sorter: (a, b) => a.range - b.range,
-    scopedSlots: { customRender: 'range' }
-  }
+    scopedSlots: { customRender: 'range' },
+  },
 ]
 const searchData = []
 for (let i = 0; i < 50; i += 1) {
@@ -324,7 +307,7 @@ for (let i = 0; i < 50; i += 1) {
     keyword: `搜索关键词-${i}`,
     count: Math.floor(Math.random() * 1000),
     range: Math.floor(Math.random() * 100),
-    status: Math.floor((Math.random() * 10) % 2)
+    status: Math.floor((Math.random() * 10) % 2),
   })
 }
 
@@ -336,15 +319,15 @@ const sourceData = [
   { item: '个护健康', count: 17 },
   { item: '服饰箱包', count: 13 },
   { item: '母婴产品', count: 9 },
-  { item: '其他', count: 7.8 }
+  { item: '其他', count: 7.8 },
 ]
 
 const pieScale = [
   {
     dataKey: 'percent',
     min: 0,
-    formatter: '.0%'
-  }
+    formatter: '.0%',
+  },
 ]
 
 const dv = new DataSet.View().source(sourceData)
@@ -352,7 +335,7 @@ dv.transform({
   type: 'percent',
   field: 'count',
   dimension: 'item',
-  as: 'percent'
+  as: 'percent',
 })
 const pieData = dv.rows
 
@@ -368,7 +351,7 @@ export default {
     Bar,
     Trend,
     NumberInfo,
-    MiniSmoothArea
+    MiniSmoothArea,
   },
   data() {
     return {
@@ -390,15 +373,15 @@ export default {
       sourceData,
       pieStyle: {
         stroke: '#fff',
-        lineWidth: 1
-      }
+        lineWidth: 1,
+      },
     }
   },
   created() {
     setTimeout(() => {
       this.loading = !this.loading
     }, 1000)
-  }
+  },
 }
 </script>
 

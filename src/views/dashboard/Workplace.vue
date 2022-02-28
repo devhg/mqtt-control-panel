@@ -30,10 +30,12 @@
                 <a-list-item-meta>
                   <a-avatar slot="avatar" :src="item.user.avatar" />
                   <div slot="title">
-                    <span>{{ item.user.nickname }}</span>&nbsp;
-                    在&nbsp;
-                    <a href="#">{{ item.project.name }}</a>&nbsp;
-                    <span>{{ item.project.action }}</span>&nbsp;
+                    <span>{{ item.user.nickname }}</span>
+                    &nbsp; 在&nbsp;
+                    <a href="#">{{ item.project.name }}</a>
+                    &nbsp;
+                    <span>{{ item.project.action }}</span>
+                    &nbsp;
                     <a href="#">{{ item.project.event }}</a>
                   </div>
                   <div slot="description">{{ item.time }}</div>
@@ -47,7 +49,7 @@
             title="快速开始 / 便捷导航"
             style="margin-bottom: 24px"
             :bordered="false"
-            :body-style="{padding: 0}"
+            :body-style="{ padding: 0 }"
           >
             <div class="item-group">
               <a>打卡签到</a>
@@ -66,7 +68,7 @@
             :bordered="false"
             :body-style="{ padding: 0 }"
           >
-            <div style="min-height: 400px;">
+            <div style="min-height: 400px">
               <radar :data="radarData" />
             </div>
           </a-card>
@@ -105,7 +107,7 @@ export default {
   components: {
     PageView,
     HeadInfo,
-    Radar
+    Radar,
   },
   data() {
     return {
@@ -119,53 +121,53 @@ export default {
         {
           user: {
             avatar: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
-            nickname: 'devhui'
+            nickname: 'devhui',
           },
           project: {
             name: '酒店前台',
             event: '1',
-            action: '进行了值班'
+            action: '进行了值班',
           },
-          time: '2018-08-23 14:47:00'
+          time: '2018-08-23 14:47:00',
         },
         {
           user: {
             avatar: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
-            nickname: 'devhui'
+            nickname: 'devhui',
           },
           project: {
             name: '酒店前台',
             event: '2',
-            action: '进行了值班'
+            action: '进行了值班',
           },
-          time: '2018-08-23 14:47:00'
+          time: '2018-08-23 14:47:00',
         },
         {
           user: {
             avatar: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
-            nickname: 'devhui'
+            nickname: 'devhui',
           },
           project: {
             name: '酒店前台',
             event: '3',
-            action: '进行了值班'
+            action: '进行了值班',
           },
-          time: '2018-08-23 14:47:00'
-        }
+          time: '2018-08-23 14:47:00',
+        },
       ],
 
-      radarData: []
+      radarData: [],
     }
   },
   computed: {
     ...mapState({
-      nickname: state => state.user.name,
-      welcome: state => state.user.welcome,
-      avatar: state => state.user.avatar
+      nickname: (state) => state.user.name,
+      welcome: (state) => state.user.welcome,
+      avatar: (state) => state.user.avatar,
     }),
     userInfo() {
       return this.$store.getters.userInfo
-    }
+    },
   },
   created() {
     console.log(this.avatar)
@@ -186,38 +188,38 @@ export default {
   },
   methods: {
     getProjects() {
-      this.$http.get('/list/search/projects').then(res => {
+      this.$http.get('/list/search/projects').then((res) => {
         this.projects = res.result && res.result.data
         this.loading = false
       })
     },
     getActivity() {
-      this.$http.get('/workplace/activity').then(res => {
+      this.$http.get('/workplace/activity').then((res) => {
         this.activities = res.result
       })
     },
     getTeams() {
-      this.$http.get('/workplace/teams').then(res => {
+      this.$http.get('/workplace/teams').then((res) => {
         this.teams = res.result
       })
     },
     initRadar() {
       this.radarLoading = true
 
-      this.$http.get('/workplace/radar').then(res => {
+      this.$http.get('/workplace/radar').then((res) => {
         const dv = new DataSet.View().source(res.result)
         dv.transform({
           type: 'fold',
           fields: ['个人', '团队', '部门'],
           key: 'user',
-          value: 'score'
+          value: 'score',
         })
 
         this.radarData = dv.rows
         this.radarLoading = false
       })
-    }
-  }
+    },
+  },
 }
 </script>
 

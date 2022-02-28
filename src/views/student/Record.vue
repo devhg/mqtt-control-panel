@@ -14,12 +14,9 @@
             </a-form-item>
           </a-col>
           <a-col :md="8 || 24" :sm="24">
-            <span
-              class="table-page-search-submitButtons"
-              :style="{ float: 'left', overflow: 'hidden' } || {} "
-            >
+            <span class="table-page-search-submitButtons" :style="{ float: 'left', overflow: 'hidden' } || {}">
               <a-button type="primary" @click="handleSumbit(queryParam)">查询</a-button>
-              <a-button style="margin-left: 8px" @click="() => queryParam = {}">重置</a-button>
+              <a-button style="margin-left: 8px" @click="() => (queryParam = {})">重置</a-button>
             </span>
           </a-col>
         </a-row>
@@ -30,11 +27,13 @@
       <a-dropdown v-if="selectedRowKeys.length > 0">
         <a-menu slot="overlay">
           <a-menu-item key="1" @click="handleDelete([])">
-            <a-icon type="delete" />删除
+            <a-icon type="delete" />
+            删除
           </a-menu-item>
           <!-- lock | unlock -->
           <a-menu-item key="2">
-            <a-icon type="lock" />锁定
+            <a-icon type="lock" />
+            锁定
           </a-menu-item>
         </a-menu>
         <a-button style="margin-left: 8px">
@@ -52,9 +51,9 @@
       :dataSource="loadData"
     >
       <span slot="type" slot-scope="type">
-        <a-tag
-          :color="type === 0 ? 'volcano' : (type === 1 ? 'green' : 'geekblue')"
-        >{{type === 0 ? '进入' : (type === 1 ? '离开' : '已过期')}}</a-tag>
+        <a-tag :color="type === 0 ? 'volcano' : type === 1 ? 'green' : 'geekblue'">
+          {{ type === 0 ? '进入' : type === 1 ? '离开' : '已过期' }}
+        </a-tag>
       </span>
       <span slot="action" slot-scope="text, record">
         <template>
@@ -86,22 +85,22 @@ export default {
           title: '时间',
           dataIndex: 'updateTime',
           sorter: true,
-          customRender: val => {
+          customRender: (val) => {
             return moment(val).format('YYYY-MM-DD HH:mm:ss')
-          }
+          },
         },
         {
           title: '进出记录',
           dataIndex: 'type',
-          scopedSlots: { customRender: 'type' }
+          scopedSlots: { customRender: 'type' },
         },
         {
           title: '操作',
           dataIndex: 'action',
           width: '150px',
           align: 'center',
-          scopedSlots: { customRender: 'action' }
-        }
+          scopedSlots: { customRender: 'action' },
+        },
       ],
       pagination: {
         pageSize: 10,
@@ -109,13 +108,13 @@ export default {
         defaultCurrent: 1,
         showSizeChanger: true,
         showQuickJumper: true,
-        pageSizeOptions: ['10', '20', '30', '40']
+        pageSizeOptions: ['10', '20', '30', '40'],
       },
       loading: true,
       // 加载数据方法 必须为 Promise 对象
       loadData: [],
       selectedRowKeys: [],
-      selectedRows: []
+      selectedRows: [],
     }
   },
   created() {
@@ -124,22 +123,22 @@ export default {
   methods: {
     handleSumbit(queryParam) {
       inoutSearch({ userId: queryParam.userId, name: queryParam.name })
-        .then(res => {
+        .then((res) => {
           this.loadData = res.data
           this.loading = false
         })
-        .catch(e => {
+        .catch((e) => {
           this.loading = false
         })
     },
     vueTable() {
       getRecord()
-        .then(res => {
+        .then((res) => {
           console.log(res)
           this.loadData = res.data
           this.loading = false
         })
-        .catch(e => {
+        .catch((e) => {
           this.loading = false
         })
     },
@@ -160,7 +159,7 @@ export default {
         cancelText: '否',
         onOk() {
           delRecord(data)
-            .then(res => {
+            .then((res) => {
               console.log(res.code)
               if (res.code == 200) {
                 that.$message.success('删除成功')
@@ -168,7 +167,7 @@ export default {
                 that.$message.error('删除失败')
               }
             })
-            .catch(e => {})
+            .catch((e) => {})
             .finally(() => {
               that.selectedRowKeys = []
               that.selectedRows = []
@@ -177,7 +176,7 @@ export default {
         },
         onCancel() {
           that.$message.info('已取消')
-        }
+        },
       })
     },
     onSelectChange(selectedRowKeys, selectedRows) {
@@ -199,14 +198,14 @@ export default {
         },
         onCancel() {
           console.log('Cancel')
-        }
+        },
       })
     },
     resetSearchForm() {
       this.queryParam = {
-        date: moment(new Date())
+        date: moment(new Date()),
       }
-    }
-  }
+    },
+  },
 }
 </script>

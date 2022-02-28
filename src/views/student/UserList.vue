@@ -15,12 +15,12 @@
           </a-col>
           <a-col :md="4" :sm="24">
             <span class="table-page-search-submitButtons">
-              <a-button type="primary" @click="vueTable(queryParam)"
-                >查询
+              <a-button type="primary" @click="vueTable(queryParam)">
+                查询
                 <a-icon type="zoom-in" />
               </a-button>
-              <a-button style="margin-left: 8px" @click="() => (queryParam = {})"
-                >重置
+              <a-button style="margin-left: 8px" @click="() => (queryParam = {})">
+                重置
                 <a-icon type="redo" />
               </a-button>
             </span>
@@ -46,9 +46,12 @@
               accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
             />
             <span class="table-page-search-submitButtons" :style="{}">
-              <a-button type="primary" @click="handleImport()">导入 <a-icon type="plus" /> </a-button>
-              <a-button style="margin-left: 8px" @click="handleExport()"
-                >导出
+              <a-button type="primary" @click="handleImport()">
+                导入
+                <a-icon type="plus" />
+              </a-button>
+              <a-button style="margin-left: 8px" @click="handleExport()">
+                导出
                 <a-icon type="switcher" />
               </a-button>
             </span>
@@ -85,7 +88,10 @@
       </a-modal>
       <a-dropdown v-if="selectedRowKeys.length > 0">
         <a-menu slot="overlay">
-          <a-menu-item key="1" @click="deleteAll()"> <a-icon type="delete" />删除 </a-menu-item>
+          <a-menu-item key="1" @click="deleteAll()">
+            <a-icon type="delete" />
+            删除
+          </a-menu-item>
           <!-- lock | unlock -->
           <!-- <a-menu-item key="2"> <a-icon type="lock" />锁定 </a-menu-item> -->
         </a-menu>
@@ -109,7 +115,7 @@
         <a-tag :color="record.score < 60 ? 'volcano' : 'green'">{{ record.score < 60 ? '挂科' : '及格' }}</a-tag>
       </span>
       <span slot="action" slot-scope="text, record">
-        <template> <a-tag @click="handleEdit(record)">修改</a-tag> </template>
+        <template><a-tag @click="handleEdit(record)">修改</a-tag></template>
       </span>
     </a-table>
     <step-by-step-modal ref="modal" @ok="handleOk" />

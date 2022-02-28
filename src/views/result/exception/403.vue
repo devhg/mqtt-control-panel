@@ -7,11 +7,9 @@ import { ExceptionPage } from '@/components'
 
 export default {
   components: {
-    ExceptionPage
-  }
+    ExceptionPage,
+  },
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

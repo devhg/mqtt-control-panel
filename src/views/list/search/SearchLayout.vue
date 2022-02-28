@@ -7,22 +7,13 @@
 <script>
 export default {
   name: 'SearchLayout',
-  data () {
+  data() {
     return {
       tabs: {
         items: [
-          {
-            key: '1',
-            title: '文章'
-          },
-          {
-            key: '2',
-            title: '项目'
-          },
-          {
-            key: '3',
-            title: '应用'
-          }
+          { key: '1', title: '文章' },
+          { key: '2', title: '项目' },
+          { key: '3', title: '应用' },
         ],
         active: () => {
           switch (this.$route.path) {
@@ -50,29 +41,26 @@ export default {
             default:
               this.$router.push('/workplace')
           }
-        }
+        },
       },
-      search: true
+      search: true,
     }
   },
-  computed: {
-
-  },
-  methods: {
-  }
+  computed: {},
+  methods: {},
 }
 </script>
 
 <style lang="less" scoped>
-  .search-head{
-    background-color: #fff;
-    margin: -25px -24px -24px;
-    .search-input{
-      text-align: center;
-      margin-bottom: 16px;
-    }
+.search-head {
+  background-color: #fff;
+  margin: -25px -24px -24px;
+  .search-input {
+    text-align: center;
+    margin-bottom: 16px;
   }
-  .search-content{
-    margin-top: 48px;
-  }
+}
+.search-content {
+  margin-top: 48px;
+}
 </style>

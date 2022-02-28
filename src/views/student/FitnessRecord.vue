@@ -14,25 +14,16 @@
             </a-form-item>
           </a-col>
           <a-col :md="8 || 24" :sm="24">
-            <span
-              class="table-page-search-submitButtons"
-              :style="{ float: 'left', overflow: 'hidden' } || {} "
-            >
+            <span class="table-page-search-submitButtons" :style="{ float: 'left', overflow: 'hidden' } || {}">
               <a-button type="primary" @click="handleSubmit()">查询</a-button>
-              <a-button style="margin-left: 8px" @click="() => queryParam = {}">重置</a-button>
+              <a-button style="margin-left: 8px" @click="() => (queryParam = {})">重置</a-button>
             </span>
           </a-col>
         </a-row>
       </a-form>
     </div>
 
-    <a-table
-      :loading="loading"
-      :columns="columns"
-      :pagination="pagination"
-      rowKey="onTime"
-      :dataSource="loadData"
-    >
+    <a-table :loading="loading" :columns="columns" :pagination="pagination" rowKey="onTime" :dataSource="loadData">
       <span slot="action" slot-scope="text, record">
         <template>
           <a @click="handleEdit(record)">详情</a>
@@ -59,31 +50,31 @@ export default {
       columns: [
         {
           title: '用户Id',
-          dataIndex: 'userId'
+          dataIndex: 'userId',
         },
         {
           title: '用户姓名',
-          dataIndex: 'name'
+          dataIndex: 'name',
         },
         {
           title: '开始时间',
           dataIndex: 'onTime',
           sorter: true,
-          customRender: val => {
+          customRender: (val) => {
             return moment(val).format('YYYY-MM-DD HH:mm:ss')
-          }
+          },
         },
         {
           title: '结束时间',
           dataIndex: 'endTime',
           sorter: true,
-          customRender: val => {
+          customRender: (val) => {
             return moment(val).format('YYYY-MM-DD HH:mm:ss')
-          }
+          },
         },
         {
           title: '健身类型',
-          dataIndex: 'fitnessType'
+          dataIndex: 'fitnessType',
           // scopedSlots: { customRender: 'type' }
         },
         {
@@ -91,8 +82,8 @@ export default {
           dataIndex: 'action',
           width: '150px',
           align: 'center',
-          scopedSlots: { customRender: 'action' }
-        }
+          scopedSlots: { customRender: 'action' },
+        },
       ],
       pagination: {
         pageSize: 10,
@@ -100,11 +91,11 @@ export default {
         defaultCurrent: 1,
         showSizeChanger: true,
         showQuickJumper: true,
-        pageSizeOptions: ['10', '20', '30', '40']
+        pageSizeOptions: ['10', '20', '30', '40'],
       },
       loading: true,
       // 加载数据方法 必须为 Promise 对象
-      loadData: []
+      loadData: [],
     }
   },
   created() {
@@ -114,21 +105,21 @@ export default {
     handleSubmit() {
       // this.queryParam=queryParam
       searchFitness({ userId: this.queryParam.userId, name: this.queryParam.name })
-        .then(res => {
+        .then((res) => {
           this.loadData = res.data
           this.loading = false
         })
-        .catch(e => {
+        .catch((e) => {
           this.loading = false
         })
     },
     vueTable() {
       getFitness()
-        .then(res => {
+        .then((res) => {
           this.loadData = res.data
           this.loading = false
         })
-        .catch(e => {
+        .catch((e) => {
           this.loading = false
         })
     },
@@ -144,9 +135,9 @@ export default {
     },
     resetSearchForm() {
       this.queryParam = {
-        date: moment(new Date())
+        date: moment(new Date()),
       }
-    }
-  }
+    },
+  },
 }
 </script>

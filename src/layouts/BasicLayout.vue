@@ -43,9 +43,7 @@
       />
 
       <!-- layout content -->
-      <a-layout-content
-        :style="{ height: '100%', margin: '24px 24px 0', paddingTop: fixedHeader ? '64px' : '0' }"
-      >
+      <a-layout-content :style="{ height: '100%', margin: '24px 24px 0', paddingTop: fixedHeader ? '64px' : '0' }">
         <multi-tab v-if="multiTab"></multi-tab>
         <transition name="page-transition">
           <route-view />
@@ -84,19 +82,19 @@ export default {
     SideMenu,
     GlobalHeader,
     GlobalFooter,
-    SettingDrawer
+    SettingDrawer,
   },
   data() {
     return {
       production: config.production,
       collapsed: false,
-      menus: []
+      menus: [],
     }
   },
   computed: {
     ...mapState({
       // 动态主路由
-      mainMenu: state => state.permission.addRouters
+      mainMenu: (state) => state.permission.addRouters,
     }),
     contentPaddingLeft() {
       if (!this.fixSidebar || this.isMobile()) {
@@ -106,15 +104,15 @@ export default {
         return '256px'
       }
       return '80px'
-    }
+    },
   },
   watch: {
     sidebarOpened(val) {
       this.collapsed = !val
-    }
+    },
   },
   created() {
-    this.menus = asyncRouterMap.find(item => item.path === '/').children
+    this.menus = asyncRouterMap.find((item) => item.path === '/').children
     // this.menus = this.mainMenu.find((item) => item.path === '/').children
     this.collapsed = !this.sidebarOpened
     // this.menus = this.mainMenu.find(item => item.path === '/').children
@@ -150,8 +148,8 @@ export default {
     menuSelect() {},
     drawerClose() {
       this.collapsed = false
-    }
-  }
+    },
+  },
 }
 </script>
 

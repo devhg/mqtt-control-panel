@@ -1,21 +1,14 @@
 // eslint-disable-next-line
-import {
-  UserLayout,
-  BasicLayout,
-  RouteView,
-  BlankLayout,
-  PageView
-} from '@/layouts'
-import {
-  bxAnaalyse
-} from '@/core/icons'
+import { UserLayout, BasicLayout, RouteView, BlankLayout, PageView } from '@/layouts'
+import { bxAnaalyse } from '@/core/icons'
 
-export const asyncRouterMap = [{
+export const asyncRouterMap = [
+  {
     path: '/',
     name: 'index',
     component: BasicLayout,
     meta: {
-      title: '首页'
+      title: '首页',
     },
     redirect: '/dashboard/workplace',
     children: [
@@ -29,17 +22,18 @@ export const asyncRouterMap = [{
           title: '数据分析',
           keepAlive: true,
           icon: bxAnaalyse,
-          permission: ['dashboard']
+          permission: ['dashboard'],
         },
-        children: [{
+        children: [
+          {
             path: '/dashboard/analysis',
             name: 'Analysis',
             component: () => import('@/views/dashboard/Analysis'),
             meta: {
               title: '分析页',
               keepAlive: false,
-              permission: ['dashboard']
-            }
+              permission: ['dashboard'],
+            },
           },
           // 外部链接
           // {
@@ -58,10 +52,10 @@ export const asyncRouterMap = [{
             meta: {
               title: '工作台',
               keepAlive: true,
-              permission: ['dashboard']
-            }
-          }
-        ]
+              permission: ['dashboard'],
+            },
+          },
+        ],
       },
       // 学生管理 list
       {
@@ -72,9 +66,10 @@ export const asyncRouterMap = [{
         meta: {
           title: '成绩管理',
           icon: 'table',
-          permission: ['table']
+          permission: ['table'],
         },
-        children: [{
+        children: [
+          {
             path: '/student/userList/:pageNo([1-9]\\d*)?',
             name: 'UserListWrapper',
             hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
@@ -82,8 +77,8 @@ export const asyncRouterMap = [{
             meta: {
               title: '学生列表',
               keepAlive: true,
-              permission: ['table']
-            }
+              permission: ['table'],
+            },
           },
           // {
           //   path: '/student/record',
@@ -103,10 +98,10 @@ export const asyncRouterMap = [{
             component: () => import('@/views/student/advanced/UserAdvanced'),
             meta: {
               keepAlive: false,
-              title: '用户详情'
-            }
-          }
-        ]
+              title: '用户详情',
+            },
+          },
+        ],
       },
       // 关于酒店
       {
@@ -116,53 +111,54 @@ export const asyncRouterMap = [{
         meta: {
           title: '关于系统',
           icon: 'profile',
-          permission: ['profile']
+          permission: ['profile'],
         },
         component: () => import('@/views/profile/basic/Index.vue'),
-      }
-    ]
+      },
+    ],
   },
   {
     path: '*',
     redirect: '/404',
-    hidden: true
-  }
+    hidden: true,
+  },
 ]
 
 /**
  * 基础路由
  * @type { *[] }
  */
-export const constantRouterMap = [{
+export const constantRouterMap = [
+  {
     path: '/user',
     component: UserLayout,
     redirect: '/user/login',
     hidden: true,
-    children: [{
+    children: [
+      {
         path: 'login',
         name: 'login',
-        component: () => import( /* webpackChunkName: "user" */ '@/views/user/Login')
+        component: () => import(/* webpackChunkName: "user" */ '@/views/user/Login'),
       },
       {
         path: 'register',
         name: 'register',
-        component: () => import( /* webpackChunkName: "user" */ '@/views/user/Register')
+        component: () => import(/* webpackChunkName: "user" */ '@/views/user/Register'),
       },
       {
         path: 'register-result',
         name: 'registerResult',
-        component: () => import( /* webpackChunkName: "user" */ '@/views/user/RegisterResult')
+        component: () => import(/* webpackChunkName: "user" */ '@/views/user/RegisterResult'),
       },
       {
         path: 'recover',
         name: 'recover',
-        component: undefined
-      }
-    ]
+        component: undefined,
+      },
+    ],
   },
   {
     path: '/404',
-    component: () => import( /* webpackChunkName: "fail" */ '@/views/result/exception/404')
-  }
-
+    component: () => import(/* webpackChunkName: "fail" */ '@/views/result/exception/404'),
+  },
 ]

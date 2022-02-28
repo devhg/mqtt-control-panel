@@ -5,10 +5,10 @@
         <div class="header">
           <a href="/">
             <img src="~@/assets/logo.svg" class="logo" alt="logo" />
-            <span class="title">学生成绩管理系统</span>
+            <span class="title">MQTT Control Panel</span>
           </a>
         </div>
-        <div class="desc">国内最具影响力的 智慧办公 解决方案</div>
+        <div class="desc">MQTT 服务器管理控制面 解决方案</div>
       </div>
 
       <route-view></route-view>
@@ -19,7 +19,7 @@
           <a href="_self">隐私</a>
           <a href="_self">条款</a>
         </div>
-        <div class="copyright">Copyright &copy; 2020 Ant Hotel 技术组出品</div>
+        <div class="copyright">Copyright &copy; 2022 mqtt.sdutcs.cn 技术组出品</div>
       </div>
     </div>
   </div>

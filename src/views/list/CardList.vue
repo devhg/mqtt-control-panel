@@ -1,10 +1,11 @@
 <template>
   <div class="card-list" ref="content">
-    <a-list rowKey="id" :grid="{gutter: 24, lg: 3, md: 2, sm: 1, xs: 1}" :dataSource="dataSource">
+    <a-list rowKey="id" :grid="{ gutter: 24, lg: 3, md: 2, sm: 1, xs: 1 }" :dataSource="dataSource">
       <a-list-item slot="renderItem" slot-scope="item">
         <template v-if="!item || item.id === undefined">
           <a-button class="new-btn" type="dashed">
-            <a-icon type="plus" />新增房间
+            <a-icon type="plus" />
+            新增房间
           </a-button>
         </template>
         <template v-else>
@@ -34,7 +35,7 @@ for (let i = 0; i < 11; i++) {
     title: '房间10' + i,
     avatar: 'https://gw.alipayobjects.com/zos/rmsportal/WdGqmHpayyMjiEhcKoVE.png',
     content:
-      '在中台产品的研发过程中，会出现不同的设计规范和实现方式，但其中往往存在很多类似的页面和组件，这些类似的组件会被抽离成一套标准规范。'
+      '在中台产品的研发过程中，会出现不同的设计规范和实现方式，但其中往往存在很多类似的页面和组件，这些类似的组件会被抽离成一套标准规范。',
   })
 }
 
@@ -54,20 +55,20 @@ export default {
             // this.$message.info('快速开始被单击')
             this.testFun()
             console.log("call['快速开始'] action")
-          }
+          },
         },
         { icon: 'info-circle-o', href: '#', title: '产品简介' },
-        { icon: 'file-text', href: '#', title: '产品文档' }
+        { icon: 'file-text', href: '#', title: '产品文档' },
       ],
       extraImage: 'https://gw.alipayobjects.com/zos/rmsportal/RzwpdLnhmvDJToTdfDPe.png',
-      dataSource
+      dataSource,
     }
   },
   methods: {
     testFun() {
       this.$message.info('快速开始被点击！')
-    }
-  }
+    },
+  },
 }
 </script>
 

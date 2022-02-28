@@ -9,14 +9,14 @@
 export default {
   name: 'IconText',
   props: {
-    'type': {
+    type: {
       type: String,
-      required: true
+      required: true,
     },
     text: {
       type: [String, Number],
-      required: true
-    }
-  }
+      required: true,
+    },
+  },
 }
 </script>
