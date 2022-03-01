@@ -1,76 +1,19 @@
 <template>
-  <div>
-    <div class="card-list" ref="content">
-      <highcharts :options="chartOptions" :callback="myCallback"></highcharts>
-    </div>
-    <a-card :bordered="true" style="margin-top: 20px">
-      <!-- table -->
-      <a-table
-        id="table"
-        :loading="loading"
-        :columns="columns"
-        :pagination="pagination"
-        rowKey="id"
-        :dataSource="loadData"
-      >
-        <span slot="status" slot-scope="status, record">
-          <a-tag :color="'green'">{{ record.packetType }}</a-tag>
-        </span>
-        <span slot="action" slot-scope="text, record">
-          <template>
-            <a-tag @click="handleEdit(record)">修改</a-tag>
-            <a-popconfirm title="你想删除这条记录吗？" ok-text="Yes" cancel-text="No" @confirm="handleDelete(record)">
-              <a-tag color="orange">删除</a-tag>
-            </a-popconfirm>
-          </template>
-        </span>
-      </a-table>
-    </a-card>
+  <div class="card-list" ref="content">
+    <highcharts :options="chartOptions" :callback="myCallback"></highcharts>
   </div>
 </template>
 
 <script>
-import Highcharts from 'highcharts-vue'
 import { Chart } from 'highcharts-vue'
-import { GetPacketList } from '@/api/packet'
-
-const columns = [
-  { title: '创建时间', dataIndex: 'createTime' },
-  { title: 'clientId', dataIndex: 'clientId' },
-  { title: '报文号', dataIndex: 'packetId' },
-  { title: '报文类型', dataIndex: 'packetType', scopedSlots: { customRender: 'status' } },
-  { title: 'Topic', dataIndex: 'topic' },
-  { title: 'Qos', dataIndex: 'qos' },
-  { title: '报文信息', dataIndex: 'packetInfo' },
-]
 
 export default {
   name: 'Packet',
   components: {
     highcharts: Chart,
   },
-  computed: {
-    columns() {
-      let { sortedInfo, filteredInfo } = this
-      sortedInfo = sortedInfo || {}
-      filteredInfo = filteredInfo || {}
-      return columns
-    },
-  },
   data() {
     return {
-      loading: true,
-      loadData: [],
-      // 查询参数
-      queryParam: {},
-      pagination: {
-        pageSize: 10,
-        defaultPageSize: 10,
-        defaultCurrent: 1,
-        showSizeChanger: true,
-        showQuickJumper: true,
-        pageSizeOptions: ['10', '20', '30', '40'],
-      },
       chartOptions: {
         chart: {
           type: 'spline',
@@ -82,6 +25,7 @@ export default {
               setInterval(function () {
                 const x = new Date().getTime() // current time
                 const y = Math.random() * 1000
+                console.log(x, y)
                 series.addPoint([x, y], true, true)
               }, 1500)
             },
@@ -150,17 +94,7 @@ export default {
       },
     }
   },
-  created() {
-    this.fetchData({})
-  },
   methods: {
-    async fetchData(queryParam) {
-      await GetPacketList({ page: 1, pageSize: 50 }).then((res) => {
-        this.loadData = res.result
-        console.log(this.loadData)
-      })
-      this.loading = false
-    },
     myCallback() {
       console.log('this is callback function')
     },

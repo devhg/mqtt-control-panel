@@ -1,24 +1,6 @@
 import { axios } from '@/utils/request'
 import api from './index'
 
-// IP黑名单 list
-export function getBlackIPList(parameter) {
-  return axios({
-    url: api.BlackIPList,
-    method: 'get',
-    params: parameter,
-  })
-}
-
-// IP黑名单 添加
-export function addBlackIP(data) {
-  return axios({
-    url: api.BlackIPCreate,
-    method: 'post',
-    data: data,
-  })
-}
-
 ////////////////////////
 
 export function StudentUpdate(parameter) {

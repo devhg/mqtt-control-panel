@@ -61,7 +61,7 @@ export const asyncRouterMap = [
             path: '/monitor/packet',
             name: 'PacketMonitor',
             hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
-            component: () => import('@/views/monitor/packet/index.vue'),
+            component: () => import('@/views/monitor/packet/Index.vue'),
             meta: {
               title: '报文监控',
               keepAlive: true,
@@ -72,7 +72,7 @@ export const asyncRouterMap = [
             path: '/monitor/flow',
             name: 'FlowMonitor',
             // hidden: true,
-            component: () => import('@/views/monitor/flow/index.vue'),
+            component: () => import('@/views/monitor/flow/Index.vue'),
             meta: {
               keepAlive: false,
               title: '流量监控',
@@ -82,7 +82,7 @@ export const asyncRouterMap = [
             path: '/monitor/route',
             name: 'RouteMonitor',
             // hidden: true,
-            component: () => import('@/views/monitor/route/index.vue'),
+            component: () => import('@/views/monitor/route/Index.vue'),
             meta: {
               keepAlive: false,
               title: '链路监控',
@@ -116,7 +116,7 @@ export const asyncRouterMap = [
           {
             path: '/connection/session',
             name: 'Session',
-            component: () => import('@/views/connection/session/index.vue'),
+            component: () => import('@/views/connection/session/Index.vue'),
             meta: {
               keepAlive: false,
               title: '会话管理',

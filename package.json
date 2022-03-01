@@ -17,6 +17,8 @@
     "axios": "^0.19.0",
     "core-js": "^3.1.2",
     "enquire.js": "^2.1.6",
+    "highcharts": "^9.3.3",
+    "highcharts-vue": "^1.4.0",
     "js-export-excel": "^1.1.4",
     "lodash.get": "^4.4.2",
     "lodash.pick": "^4.4.0",

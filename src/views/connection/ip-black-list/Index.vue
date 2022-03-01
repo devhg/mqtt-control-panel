@@ -26,16 +26,9 @@
             </span>
           </a-col>
           <a-col :md="4" :sm="24">
-            <input
-              type="file"
-              @change="importFile"
-              id="imFile"
-              style="display: none"
-              accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-            />
             <span class="table-page-search-submitButtons" :style="{}">
-              <a-button type="primary" @click="handleImport()">
-                导入
+              <a-button type="primary" @click="() => (addModalShow = !addModalShow)">
+                新增
                 <a-icon type="plus" />
               </a-button>
               <a-button style="margin-left: 8px" @click="handleExport()">
@@ -48,9 +41,36 @@
       </a-form>
     </div>
 
-    <!-- modal -->
+    <!-- 修改modal -->
     <div class="table-operator">
-      <a-modal title="修改记录" :visible="modalShow" @ok="updateSubmit(edit)" @cancel="insertCancel()">
+      <a-modal
+        title="新增记录"
+        :visible="addModalShow"
+        @ok="addSubmit(addForm)"
+        @cancel="() => (addModalShow = !addModalShow)"
+      >
+        <a-form layout="horizontal">
+          <a-form-item label="IP地址" :label-col="formLayout.labelCol" :wrapper-col="formLayout.wrapperCol">
+            <a-input v-model="addForm.ip" name="ip" />
+          </a-form-item>
+          <a-form-item label="状态" :label-col="formLayout.labelCol" :wrapper-col="formLayout.wrapperCol">
+            <a-radio-group name="radioGroup" v-model="addForm.status" :default-value="addForm.status">
+              <a-radio :value="1">开启</a-radio>
+              <a-radio :value="0">关闭</a-radio>
+            </a-radio-group>
+          </a-form-item>
+          <a-form-item label="操作人" :label-col="formLayout.labelCol" :wrapper-col="formLayout.wrapperCol">
+            <a-input v-model="addForm.op_user" name="op_user" />
+          </a-form-item>
+        </a-form>
+      </a-modal>
+      <!--  -->
+      <a-modal
+        title="修改记录"
+        :visible="updateModalShow"
+        @ok="updateSubmit(edit)"
+        @cancel="() => (updateModalShow = !updateModalShow)"
+      >
         <a-form layout="horizontal">
           <a-form-item label="记录编号" :label-col="formLayout.labelCol" :wrapper-col="formLayout.wrapperCol">
             <a-input disabled v-model="edit.id" name="id" />
@@ -59,8 +79,6 @@
             <a-input v-model="edit.ip" name="ip" />
           </a-form-item>
           <a-form-item label="状态" :label-col="formLayout.labelCol" :wrapper-col="formLayout.wrapperCol">
-            <!-- <a-input v-model="edit.status" name="status" /> -->
-            <!-- <a-radio :value="edit.status">开启</a-radio> -->
             <a-radio-group name="radioGroup" v-model="edit.status" :default-value="edit.status">
               <a-radio :value="1">开启</a-radio>
               <a-radio :value="0">关闭</a-radio>
@@ -102,7 +120,7 @@
       <span slot="action" slot-scope="text, record">
         <template>
           <a-tag @click="handleEdit(record)">修改</a-tag>
-          <a-popconfirm title="你想删除这条记录吗？" ok-text="Yes" cancel-text="No" @confirm="handleDelete">
+          <a-popconfirm title="你想删除这条记录吗？" ok-text="Yes" cancel-text="No" @confirm="handleDelete(record)">
             <a-tag color="orange">删除</a-tag>
           </a-popconfirm>
         </template>
@@ -114,11 +132,11 @@
 
 <script>
 import moment from 'moment'
-// import { STable, Ellipsis } from '@/components'
+import ExportJsonExcel from 'js-export-excel'
+
 import StepByStepModal from '@/views/list/modules/StepByStepModal'
 import CreateForm from '@/views/list/modules/CreateForm'
-import { getBlackIPList, StudentUpdate, StudentDelete, StudentUpload } from '@/api/manage'
-import ExportJsonExcel from 'js-export-excel'
+import { GetBlackIPList, AddBlackIP, UpdateBlackIP, DeleteBlackIP } from '@/api/blackip'
 
 const columns = [
   {
@@ -170,12 +188,15 @@ export default {
         wrapperCol: { offset: 1, span: 16 },
       },
       // 高级搜索 展开/关闭
-      modalShow: false,
+      updateModalShow: false,
+      addModalShow: false,
 
       filteredInfo: null,
       sortedInfo: null,
 
       edit: {},
+      addForm: {},
+
       // 查询参数
       queryParam: {},
       pagination: {
@@ -206,44 +227,54 @@ export default {
   },
   methods: {
     handleEdit(record) {
-      this.modalShow = !this.modalShow
+      this.updateModalShow = !this.updateModalShow
       this.edit = record
     },
-    handleDelete(e) {
-      this.$message.success('Click on Yes')
-    },
-    updateSubmit(data) {
-      console.log(data)
-      const uname = data.ip
-      //   StudentUpdate({
-      //     id: data.id,
-      //   })
-      //     .then((res) => {
-      //       console.log(res)
-      //       this.$message.info(`${uname} 信息更新成功`)
-      //     })
-      //     .catch((e) => {
-      //       this.$message.error(`${uname} 信息更新失败`)
-      //     })
-      this.insertCancel()
-    },
-    insertCancel() {
+    async handleDelete(data) {
+      await DeleteBlackIP(data)
+        .then((res) => {
+          this.$message.info(res.result)
+        })
+        .catch((e) => {
+          this.$message.error(`记录更新失败`)
+        })
       this.fetchData({})
-      this.modalShow = !this.modalShow
     },
-    fetchData(param) {
+    async updateSubmit(data) {
+      await UpdateBlackIP(data)
+        .then((res) => {
+          this.$message.info(res.result)
+        })
+        .catch((e) => {
+          this.$message.error(`记录更新失败`)
+        })
+      this.updateModalShow = !this.updateModalShow
+      this.fetchData({})
+    },
+    async addSubmit(data) {
+      await AddBlackIP(data)
+        .then((res) => {
+          this.$message.info(res.result)
+        })
+        .catch((e) => {
+          this.$message.error(`记录添加失败`)
+        })
+      this.addModalShow = !this.addModalShow
+      this.fetchData({})
+    },
+    async fetchData(param) {
       this.loading = true
-      this.courseName = param.course == undefined ? this.courseName : param.course
-      console.log(this.courseName)
-      getBlackIPList({ class: param.class, course: param.course, uid: param.uid, uname: param.uname })
+      console.log(param)
+      await GetBlackIPList(param)
         .then((res) => {
           this.loadData = res.result
           console.log(this.loadData)
-          this.loading = false
         })
         .catch((e) => {
-          this.loading = false
+          console.log(e)
+          this.$message.error(`未知错误`)
         })
+      this.loading = false
     },
     handleOk() {
       this.$refs.table.refresh()
@@ -312,48 +343,6 @@ export default {
 
       var toExcel = new ExportJsonExcel(option)
       toExcel.saveExcel()
-    },
-    handleImport() {
-      document.getElementById('imFile').click()
-    },
-    importFile: function (e) {
-      var obj = e.target
-      if (e.target.files.length == 0) {
-        this.$message.error(`没有获取到导入内容`)
-        return
-      }
-      var f = obj.files[0]
-      var reader = new FileReader()
-      reader.readAsBinaryString(f)
-      reader.onload = (e) => {
-        var data = e.target.result //获取上传的文件数据
-        this.wb = XLSX.read(data, {
-          type: 'binary',
-        })
-        var importData = XLSX.utils.sheet_to_json(this.wb.Sheets[this.wb.SheetNames[0]])
-        //至此已完成对上传excel的内容解析 然后可以直接把这个对象数组传给后端
-        StudentUpload(importData)
-          .then((res) => {
-            console.log(res)
-            this.$message.info(`批量导入成功`)
-            this.fetchData({})
-          })
-          .catch((e) => {
-            this.$message.error(`批量导入失败`)
-          })
-      }
-    },
-    uploadExcel_repuest(content) {
-      // var reader = new FileReader()
-      // reader.readAsBinaryString(content.file)
-      // reader.onload = (e) => {
-      //   var data = e.target.result //获取上传的文件内容
-      //   this.wb = XLSX.read(data, {
-      //     type: 'binary',
-      //   })
-      //   this.importData = XLSX.utils.sheet_to_json(this.wb.Sheets[this.wb.SheetNames[0]])
-      //   console.log('解析到的excel数据为:', this.importData)
-      // }
     },
   },
 }
