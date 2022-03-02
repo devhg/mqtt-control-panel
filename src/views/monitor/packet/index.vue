@@ -10,8 +10,8 @@
         :loading="loading"
         :columns="columns"
         :pagination="pagination"
-        rowKey="id"
         :dataSource="loadData"
+        @change="handleChange"
       >
         <span slot="status" slot-scope="status, record">
           <a-tag :color="'green'">{{ record.packetType }}</a-tag>
@@ -32,10 +32,10 @@
 <script>
 import Highcharts from 'highcharts-vue'
 import { Chart } from 'highcharts-vue'
-import { GetPacketList } from '@/api/packet'
+import { GetPacketList, GetPacketNumsPerSecond } from '@/api/packet'
 
 const columns = [
-  { title: '创建时间', dataIndex: 'createTime' },
+  { title: '创建时间', dataIndex: 'createTime', width: '200px' },
   { title: 'clientId', dataIndex: 'clientId' },
   { title: '报文号', dataIndex: 'packetId' },
   { title: '报文类型', dataIndex: 'packetType', scopedSlots: { customRender: 'status' } },
@@ -64,6 +64,7 @@ export default {
       // 查询参数
       queryParam: {},
       pagination: {
+        total: 0,
         pageSize: 10,
         defaultPageSize: 10,
         defaultCurrent: 1,
@@ -79,11 +80,15 @@ export default {
           events: {
             load: function () {
               var series = this.series[0]
-              setInterval(function () {
-                const x = new Date().getTime() // current time
-                const y = Math.random() * 1000
-                series.addPoint([x, y], true, true)
-              }, 1500)
+              setInterval(async function () {
+                var data = []
+                var now = new Date().getTime()
+                await GetPacketNumsPerSecond({ t: now }).then((res) => {
+                  data = res.result
+                })
+                console.log(data)
+                series.addPoint([now, data.y], true, true)
+              }, 2000)
             },
           },
         },
@@ -140,7 +145,7 @@ export default {
               for (var i = -19; i <= 0; i += 1) {
                 data.push({
                   x: time + i * 1000,
-                  y: Math.random() * 1000,
+                  y: 0,
                 })
               }
               return data
@@ -155,14 +160,20 @@ export default {
   },
   methods: {
     async fetchData(queryParam) {
-      await GetPacketList({ page: 1, pageSize: 50 }).then((res) => {
-        this.loadData = res.result
-        console.log(this.loadData)
+      await GetPacketList(queryParam).then((res) => {
+        this.loadData = res.result.data
+        this.pagination.total = res.result.total
       })
       this.loading = false
     },
     myCallback() {
       console.log('this is callback function')
+    },
+    handleChange(pagination, filters, sorter) {
+      console.log('Various parameters', pagination, filters, sorter)
+      this.queryParam.page = pagination.current
+      this.queryParam.pageSize = pagination.pageSize
+      this.fetchData(this.queryParam)
     },
   },
 }

@@ -16,6 +16,8 @@ const api = {
   SessionList: '/api/session/list',
 
   PacketList: '/api/packet/list',
+  SystemQps: '/api/packet/qps',
+  SystemPacketsPerSecond: '/api/packet/packets_per_second',
 
   StudentDelete: '/student/delete',
   StudentUpload: '/student/upload',
