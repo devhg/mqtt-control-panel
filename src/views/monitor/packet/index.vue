@@ -41,13 +41,13 @@ const columns = [
   { title: '报文类型', dataIndex: 'packetType', scopedSlots: { customRender: 'status' } },
   { title: 'Topic', dataIndex: 'topic' },
   { title: 'Qos', dataIndex: 'qos' },
-  { title: '报文信息', dataIndex: 'packetInfo' },
+  { title: '报文信息', dataIndex: 'packetInfo' }
 ]
 
 export default {
   name: 'Packet',
   components: {
-    highcharts: Chart,
+    highcharts: Chart
   },
   computed: {
     columns() {
@@ -55,7 +55,7 @@ export default {
       sortedInfo = sortedInfo || {}
       filteredInfo = filteredInfo || {}
       return columns
-    },
+    }
   },
   data() {
     return {
@@ -70,7 +70,7 @@ export default {
         defaultCurrent: 1,
         showSizeChanger: true,
         showQuickJumper: true,
-        pageSizeOptions: ['10', '20', '30', '40'],
+        pageSizeOptions: ['10', '20', '30', '40']
       },
       chartOptions: {
         chart: {
@@ -78,81 +78,81 @@ export default {
           animation: Highcharts.svg,
           marginRight: 10,
           events: {
-            load: function () {
+            load: function() {
               var series = this.series[0]
-              setInterval(async function () {
+              setInterval(async function() {
                 var data = []
                 var now = new Date().getTime()
-                await GetPacketNumsPerSecond({ t: now }).then((res) => {
+                await GetPacketNumsPerSecond({ t: now }).then(res => {
                   data = res.result
                 })
                 console.log(data)
                 series.addPoint([now, data.y], true, true)
               }, 2000)
-            },
-          },
+            }
+          }
         },
         time: {
-          useUTC: false,
+          useUTC: false
         },
         title: {
-          text: '报文监控',
+          text: '报文监控'
         },
         accessibility: {
           announceNewData: {
             enabled: true,
             minAnnounceInterval: 15000,
-            announcementFormatter: function (allSeries, newSeries, newPoint) {
+            announcementFormatter: function(allSeries, newSeries, newPoint) {
               if (newPoint) {
                 return 'New point added. Value: ' + newPoint.y
               }
               return false
-            },
-          },
+            }
+          }
         },
         xAxis: {
           type: 'datetime',
-          tickPixelInterval: 150,
+          tickPixelInterval: 150
         },
         yAxis: {
           title: {
-            text: '报文情况',
+            text: '报文情况'
           },
           plotLines: [
             {
               value: 0,
               width: 1,
-              color: '#808080',
-            },
-          ],
+              color: '#808080'
+            }
+          ]
         },
         tooltip: {
           headerFormat: '<b>{series.name}</b><br/>',
-          pointFormat: '{point.x:%Y-%m-%d %H:%M:%S}<br/><b>{point.y:.2f}</b>',
+          pointFormat: '{point.x:%Y-%m-%d %H:%M:%S}<br/><b>{point.y:.2f}</b>'
         },
         legend: {
-          enabled: false,
+          enabled: false
         },
         exporting: {
-          enabled: false,
+          enabled: false
         },
         series: [
           {
             name: '报文数目',
-            data: (function () {
+            data: (function() {
               var data = []
               var time = new Date().getTime()
               for (var i = -19; i <= 0; i += 1) {
                 data.push({
                   x: time + i * 1000,
-                  y: 0,
+                  y: 0
                 })
               }
               return data
-            })(),
-          },
-        ],
-      },
+            })()
+          }
+        ]
+      }
     }
   },
   created() {
@@ -160,8 +160,9 @@ export default {
   },
   methods: {
     async fetchData(queryParam) {
-      await GetPacketList(queryParam).then((res) => {
+      await GetPacketList(queryParam).then(res => {
         this.loadData = res.result.data
+        console.log(this.loadData)
         this.pagination.total = res.result.total
       })
       this.loading = false
@@ -174,8 +175,8 @@ export default {
       this.queryParam.page = pagination.current
       this.queryParam.pageSize = pagination.pageSize
       this.fetchData(this.queryParam)
-    },
-  },
+    }
+  }
 }
 </script>
 

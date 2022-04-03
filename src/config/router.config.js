@@ -20,7 +20,7 @@ export const asyncRouterMap = [
           title: 'dashboard',
           keepAlive: true,
           icon: bxAnaalyse,
-          permission: ['dashboard'],
+          permission: ['dashboard']
         },
         children: [
           {
@@ -30,8 +30,8 @@ export const asyncRouterMap = [
             meta: {
               title: '分析页',
               keepAlive: false,
-              permission: ['dashboard'],
-            },
+              permission: ['dashboard']
+            }
           },
           {
             path: '/dashboard/workplace',
@@ -40,10 +40,10 @@ export const asyncRouterMap = [
             meta: {
               title: '工作台',
               keepAlive: true,
-              permission: ['dashboard'],
-            },
-          },
-        ],
+              permission: ['dashboard']
+            }
+          }
+        ]
       },
       // 服务监控
       {
@@ -54,7 +54,7 @@ export const asyncRouterMap = [
         meta: {
           title: '服务监控',
           icon: 'fund',
-          permission: ['table'],
+          permission: ['table']
         },
         children: [
           {
@@ -65,8 +65,8 @@ export const asyncRouterMap = [
             meta: {
               title: '报文监控',
               keepAlive: true,
-              permission: ['table'],
-            },
+              permission: ['table']
+            }
           },
           {
             path: '/monitor/flow',
@@ -75,8 +75,8 @@ export const asyncRouterMap = [
             component: () => import('@/views/monitor/flow/Index.vue'),
             meta: {
               keepAlive: false,
-              title: '流量监控',
-            },
+              title: '流量监控'
+            }
           },
           {
             path: '/monitor/route',
@@ -85,10 +85,10 @@ export const asyncRouterMap = [
             component: () => import('@/views/monitor/route/Index.vue'),
             meta: {
               keepAlive: false,
-              title: '链路监控',
-            },
-          },
-        ],
+              title: '链路监控'
+            }
+          }
+        ]
       },
       // 连接管理
       {
@@ -99,7 +99,7 @@ export const asyncRouterMap = [
         meta: {
           title: '连接管理',
           icon: 'api',
-          permission: ['table'],
+          permission: ['table']
         },
         children: [
           {
@@ -110,8 +110,8 @@ export const asyncRouterMap = [
             meta: {
               title: 'IP黑名单',
               keepAlive: true,
-              permission: ['table'],
-            },
+              permission: ['table']
+            }
           },
           {
             path: '/connection/session',
@@ -119,10 +119,10 @@ export const asyncRouterMap = [
             component: () => import('@/views/connection/session/Index.vue'),
             meta: {
               keepAlive: false,
-              title: '会话管理',
-            },
-          },
-        ],
+              title: '会话管理'
+            }
+          }
+        ]
       },
       // 客户端管理
       {
@@ -133,7 +133,7 @@ export const asyncRouterMap = [
         meta: {
           title: '客户端管理',
           icon: 'usergroup-add',
-          permission: ['table'],
+          permission: ['table']
         },
         children: [
           {
@@ -142,21 +142,21 @@ export const asyncRouterMap = [
             hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
             component: () => import('@/views/client/List.vue'),
             meta: {
-              title: '用户列表',
+              title: '客户端列表',
               keepAlive: true,
-              permission: ['table'],
-            },
+              permission: ['table']
+            }
           },
           {
             path: '/client/register',
             name: 'UserAdvanced',
-            component: () => import('@/views/client/List.vue'),
+            component: () => import('@/views/client/Register.vue'),
             meta: {
               keepAlive: false,
-              title: '用户注册',
-            },
-          },
-        ],
+              title: '客户端注册'
+            }
+          }
+        ]
       },
       // 关于系统
       {
@@ -166,9 +166,9 @@ export const asyncRouterMap = [
         meta: {
           title: '关于系统',
           icon: 'profile',
-          permission: ['profile'],
+          permission: ['profile']
         },
-        component: () => import('@/views/profile/basic/Index.vue'),
+        component: () => import('@/views/profile/basic/Index.vue')
       },
       // account
       {
@@ -183,7 +183,7 @@ export const asyncRouterMap = [
             path: '/account/center',
             name: 'center',
             component: () => import('@/views/account/center'),
-            meta: { title: '个人中心', keepAlive: true, permission: ['user'] },
+            meta: { title: '个人中心', keepAlive: true, permission: ['user'] }
           },
           {
             path: '/account/settings',
@@ -191,17 +191,17 @@ export const asyncRouterMap = [
             component: () => import('@/views/account/settings/Index'),
             meta: { title: '账户设置', hideHeader: true, permission: ['user'] },
             // redirect: '/account/settings/basic',
-            hideChildrenInMenu: true,
-          },
-        ],
-      },
-    ],
+            hideChildrenInMenu: true
+          }
+        ]
+      }
+    ]
   },
   {
     path: '*',
     redirect: '/404',
-    hidden: true,
-  },
+    hidden: true
+  }
 ]
 
 /**
@@ -218,28 +218,28 @@ export const constantRouterMap = [
       {
         path: 'login',
         name: 'login',
-        component: () => import(/* webpackChunkName: "user" */ '@/views/user/Login'),
+        component: () => import(/* webpackChunkName: "user" */ '@/views/user/Login')
       },
       {
         path: 'register',
         name: 'register',
-        component: () => import(/* webpackChunkName: "user" */ '@/views/user/Register'),
+        component: () => import(/* webpackChunkName: "user" */ '@/views/user/Register')
       },
       {
         path: 'register-result',
         name: 'registerResult',
-        component: () => import(/* webpackChunkName: "user" */ '@/views/user/RegisterResult'),
+        component: () => import(/* webpackChunkName: "user" */ '@/views/user/RegisterResult')
       },
       {
         path: 'recover',
         name: 'recover',
-        component: undefined,
-      },
-    ],
+        component: undefined
+      }
+    ]
   },
   {
     path: '/404',
     name: '404',
-    component: () => import(/* webpackChunkName: "fail" */ '@/views/result/exception/404'),
-  },
+    component: () => import(/* webpackChunkName: "fail" */ '@/views/result/exception/404')
+  }
 ]

@@ -13,15 +13,22 @@ const api = {
   BlackIPUpdate: '/api/blackip/update',
   BlackIPDelete: '/api/blackip/delete',
 
+  // 会话
   SessionList: '/api/session/list',
 
   PacketList: '/api/packet/list',
   SystemQps: '/api/packet/qps',
   SystemPacketsPerSecond: '/api/packet/packets_per_second',
 
+  // 客户端
+  ClientList: '/api/client/list',
+  ClientCreate: '/api/client/create',
+  ClientUpdate: '/api/client/update',
+  ClientDelete: '/api/client/delete',
+
   StudentDelete: '/student/delete',
   StudentUpload: '/student/upload',
   StudentAnalysis: '/student/analysis',
-  StudentAnalysisCourse: '/student/analysis/course',
+  StudentAnalysisCourse: '/student/analysis/course'
 }
 export default api
