@@ -1,9 +1,9 @@
 <template>
-  <a-locale-provider :locale="locale">
+  <a-config-provider :locale="locale">
     <div id="app">
       <router-view />
     </div>
-  </a-locale-provider>
+  </a-config-provider>
 </template>
 
 <script>
@@ -14,7 +14,7 @@ export default {
   mixins: [AppDeviceEnquire],
   data() {
     return {
-      locale: zhCN,
+      locale: zhCN
     }
   },
   mounted() {},
@@ -27,7 +27,7 @@ export default {
     window.addEventListener('beforeunload', () => {
       sessionStorage.setItem('store', JSON.stringify(this.$store.state))
     })
-  },
+  }
 }
 </script>
 <style>

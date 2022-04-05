@@ -26,8 +26,8 @@ const api = {
   ClientUpdate: '/api/client/update',
   ClientDelete: '/api/client/delete',
 
-  StudentDelete: '/student/delete',
-  StudentUpload: '/student/upload',
+  ClusterInfo: '/api/cluster/info',
+  TopicList: '/api/topic/list',
   StudentAnalysis: '/student/analysis',
   StudentAnalysisCourse: '/student/analysis/course'
 }

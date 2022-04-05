@@ -29,29 +29,56 @@ const tooltip = [
   })
 ]
 
-const scale = [{
-  dataKey: 'x',
-  min: 2
-}, {
-  dataKey: 'y',
-  title: '时间',
-  min: 1,
-  max: 30
-}]
+const scale = [
+  {
+    dataKey: 'x',
+    min: 2
+  },
+  {
+    dataKey: 'y',
+    title: '时间',
+    min: 1,
+    max: 30
+  }
+]
 
 export default {
   name: 'MiniBar',
-  data () {
+  props: {
+    height: {
+      type: Number,
+      default: 100
+    },
+    data: {
+      type: Array,
+      default() {
+        return data
+      }
+    },
+    tooltip: {
+      type: Array,
+      default() {
+        return tooltip
+      }
+    },
+    scale: {
+      type: Array,
+      default() {
+        return scale
+      }
+    }
+  },
+  data() {
     return {
-      data,
-      tooltip,
-      scale,
-      height: 100
+      //   data,
+      //   tooltip,
+      //   scale,
+      //   height: 100
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
-  @import "chart";
+@import 'chart';
 </style>

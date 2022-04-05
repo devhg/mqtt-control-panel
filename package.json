@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@antv/data-set": "^0.10.2",
-    "ant-design-vue": "1.4.2",
+    "ant-design-vue": "1.7.8",
     "axios": "^0.19.0",
     "core-js": "^3.1.2",
     "enquire.js": "^2.1.6",
@@ -25,6 +25,7 @@
     "md5": "^2.2.1",
     "mockjs2": "1.0.8",
     "moment": "^2.24.0",
+    "mqtt": "^4.3.7",
     "nprogress": "^0.2.0",
     "viser-vue": "^2.4.6",
     "vue": "^2.6.10",

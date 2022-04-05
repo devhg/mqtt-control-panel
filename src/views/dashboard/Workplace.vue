@@ -5,7 +5,7 @@
         {{ timeFix }}，{{ nickname }}
         <span class="welcome-text">，{{ welcome }}</span>
       </div>
-      <div>前台服务人员 | 蚂蚁酒店 -</div>
+      <div>MQTT服务器控制面板</div>
     </div>
     <div slot="extra">
       <a-row class="more-info">
@@ -24,24 +24,30 @@
     <div>
       <a-row :gutter="24">
         <a-col :xl="16" :lg="24" :md="24" :sm="24" :xs="24">
-          <a-card :loading="loading" title="工作动态" :bordered="false">
-            <a-list>
-              <a-list-item :key="index" v-for="(item, index) in activities">
-                <a-list-item-meta>
-                  <a-avatar slot="avatar" :src="item.user.avatar" />
-                  <div slot="title">
-                    <span>{{ item.user.nickname }}</span>
-                    &nbsp; 在&nbsp;
-                    <a href="#">{{ item.project.name }}</a>
-                    &nbsp;
-                    <span>{{ item.project.action }}</span>
-                    &nbsp;
-                    <a href="#">{{ item.project.event }}</a>
-                  </div>
-                  <div slot="description">{{ item.time }}</div>
-                </a-list-item-meta>
-              </a-list-item>
-            </a-list>
+          <a-card>
+            <a-descriptions title="用户信息" bordered>
+              <a-descriptions-item label="id">
+                123
+              </a-descriptions-item>
+              <a-descriptions-item label="用户名">
+                admin
+              </a-descriptions-item>
+              <a-descriptions-item label="性别">
+                男
+              </a-descriptions-item>
+              <a-descriptions-item label="花名">
+                管理员
+              </a-descriptions-item>
+              <a-descriptions-item label="邮箱">
+                admin@mqtt.com
+              </a-descriptions-item>
+              <a-descriptions-item label="年龄">
+                18
+              </a-descriptions-item>
+              <a-descriptions-item label="系统" :span="3">
+                <a-badge status="processing" text="工作中" />
+              </a-descriptions-item>
+            </a-descriptions>
           </a-card>
         </a-col>
         <a-col style="padding: 0 12px" :xs="24" :xl="8" :lg="24" :md="24" :sm="24">
@@ -98,7 +104,7 @@ import { PageView } from '@/layouts'
 import HeadInfo from '@/components/tools/HeadInfo'
 import { Radar } from '@/components'
 
-import { getRoleList, getServiceList } from '@/api/manage'
+import { getClusterInfo } from '@/api/manage'
 
 const DataSet = require('@antv/data-set')
 
@@ -107,7 +113,7 @@ export default {
   components: {
     PageView,
     HeadInfo,
-    Radar,
+    Radar
   },
   data() {
     return {
@@ -121,53 +127,53 @@ export default {
         {
           user: {
             avatar: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
-            nickname: 'devhui',
+            nickname: 'devhui'
           },
           project: {
             name: '酒店前台',
             event: '1',
-            action: '进行了值班',
+            action: '进行了值班'
           },
-          time: '2018-08-23 14:47:00',
+          time: '2018-08-23 14:47:00'
         },
         {
           user: {
             avatar: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
-            nickname: 'devhui',
+            nickname: 'devhui'
           },
           project: {
             name: '酒店前台',
             event: '2',
-            action: '进行了值班',
+            action: '进行了值班'
           },
-          time: '2018-08-23 14:47:00',
+          time: '2018-08-23 14:47:00'
         },
         {
           user: {
             avatar: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
-            nickname: 'devhui',
+            nickname: 'devhui'
           },
           project: {
             name: '酒店前台',
             event: '3',
-            action: '进行了值班',
+            action: '进行了值班'
           },
-          time: '2018-08-23 14:47:00',
-        },
+          time: '2018-08-23 14:47:00'
+        }
       ],
-
-      radarData: [],
+      info: [],
+      radarData: []
     }
   },
   computed: {
     ...mapState({
-      nickname: (state) => state.user.name,
-      welcome: (state) => state.user.welcome,
-      avatar: (state) => state.user.avatar,
+      nickname: state => state.user.name,
+      welcome: state => state.user.welcome,
+      avatar: state => state.user.avatar
     }),
     userInfo() {
       return this.$store.getters.userInfo
-    },
+    }
   },
   created() {
     console.log(this.avatar)
@@ -176,9 +182,9 @@ export default {
     //   console.log('workplace -> call getRoleList()', res)
     // })
 
-    // getServiceList().then(res => {
-    //   console.log('workplace -> call getServiceList()', res)
-    // })
+    getClusterInfo().then(res => {
+      this.info = res.result
+    })
   },
   mounted() {
     // this.getProjects()
@@ -188,38 +194,38 @@ export default {
   },
   methods: {
     getProjects() {
-      this.$http.get('/list/search/projects').then((res) => {
+      this.$http.get('/list/search/projects').then(res => {
         this.projects = res.result && res.result.data
         this.loading = false
       })
     },
     getActivity() {
-      this.$http.get('/workplace/activity').then((res) => {
-        this.activities = res.result
+      this.$http.get('/workplace/activity').then(res => {
+        this.activities = res.result.runtime
       })
     },
     getTeams() {
-      this.$http.get('/workplace/teams').then((res) => {
+      this.$http.get('/workplace/teams').then(res => {
         this.teams = res.result
       })
     },
     initRadar() {
       this.radarLoading = true
 
-      this.$http.get('/workplace/radar').then((res) => {
+      this.$http.get('/workplace/radar').then(res => {
         const dv = new DataSet.View().source(res.result)
         dv.transform({
           type: 'fold',
           fields: ['个人', '团队', '部门'],
           key: 'user',
-          value: 'score',
+          value: 'score'
         })
 
         this.radarData = dv.rows
         this.radarLoading = false
       })
-    },
-  },
+    }
+  }
 }
 </script>
 

@@ -129,7 +129,7 @@ export const asyncRouterMap = [
         path: '/client',
         name: 'Client',
         component: PageView,
-        redirect: '/student/userList',
+        redirect: '/client/userList',
         meta: {
           title: '客户端管理',
           icon: 'usergroup-add',
@@ -154,6 +154,42 @@ export const asyncRouterMap = [
             meta: {
               keepAlive: false,
               title: '客户端注册'
+            }
+          }
+        ]
+      },
+      // 订阅管理
+      {
+        path: '/subscribe',
+        name: 'Subscribe',
+        component: PageView,
+        redirect: '/subscribe/topicList',
+        meta: {
+          title: '订阅管理',
+          icon: 'cluster',
+          permission: ['table']
+        },
+        children: [
+          {
+            path: '/subscribe/topicList',
+            name: 'TopicListWrapper',
+            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
+            component: () => import('@/views/subscribe/TopicList.vue'),
+            meta: {
+              title: 'Topic列表',
+              keepAlive: true,
+              permission: ['table']
+            }
+          },
+          {
+            path: '/subscribe/wsMqtt',
+            name: 'websocketMqtt',
+            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
+            component: () => import('@/views/subscribe/WsMqtt.vue'),
+            meta: {
+              title: '连接测试',
+              keepAlive: true,
+              permission: ['table']
             }
           }
         ]

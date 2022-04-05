@@ -31,10 +31,12 @@
                 新增
                 <a-icon type="plus" />
               </a-button>
-              <a-button style="margin-left: 8px" @click="handleExport()">
-                导出
-                <a-icon type="switcher" />
-              </a-button>
+              <a-popconfirm title="暂不支持导出，后续支持" ok-text="Yes" cancel-text="No">
+                <a-button style="margin-left: 8px">
+                  导出
+                  <a-icon type="switcher" />
+                </a-button>
+              </a-popconfirm>
             </span>
           </a-col>
         </a-row>
@@ -89,24 +91,11 @@
           </a-form-item>
         </a-form>
       </a-modal>
-      <a-dropdown v-if="selectedRowKeys.length > 0">
-        <a-menu slot="overlay">
-          <a-menu-item key="1" @click="deleteAll()">
-            <a-icon type="delete" />
-            删除
-          </a-menu-item>
-        </a-menu>
-        <a-button style="margin-left: 8px">
-          批量操作
-          <a-icon type="down" />
-        </a-button>
-      </a-dropdown>
     </div>
 
     <!-- table -->
     <a-table
       id="table"
-      :row-selection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }"
       :loading="loading"
       :columns="columns"
       :pagination="pagination"
@@ -132,7 +121,6 @@
 
 <script>
 import moment from 'moment'
-import ExportJsonExcel from 'js-export-excel'
 
 import StepByStepModal from '@/views/list/modules/StepByStepModal'
 import CreateForm from '@/views/list/modules/CreateForm'
@@ -142,8 +130,7 @@ const columns = [
   {
     title: '记录编号',
     dataIndex: 'id',
-    sorter: (a, b) => a.id - b.id,
-    // sortOrder: sortedInfo.columnKey === 'id' && sortedInfo.order,
+    sorter: (a, b) => a.id - b.id
   },
   { title: 'IP地址', dataIndex: 'ip' },
   { title: '操作人', dataIndex: 'op_user' },
@@ -151,10 +138,9 @@ const columns = [
     title: '创建时间',
     dataIndex: 'createTime',
     sorter: (a, b) => a.createTime - b.createTime,
-    // sortOrder: sortedInfo.columnKey === 'signTime' && sortedInfo.order,
-    customRender: (val) => {
+    customRender: val => {
       return moment(val).format('YYYY-MM-DD HH:mm:ss')
-    },
+    }
   },
   { title: '状态', dataIndex: 'status', scopedSlots: { customRender: 'status' } },
   {
@@ -162,37 +148,31 @@ const columns = [
     dataIndex: 'action',
     width: '200px',
     align: 'center',
-    scopedSlots: { customRender: 'action' },
-  },
+    scopedSlots: { customRender: 'action' }
+  }
 ]
 
 export default {
   name: 'BlackIPList',
   components: {
     CreateForm,
-    StepByStepModal,
+    StepByStepModal
   },
   computed: {
     columns() {
-      let { sortedInfo, filteredInfo } = this
-      sortedInfo = sortedInfo || {}
-      filteredInfo = filteredInfo || {}
       return columns
-    },
+    }
   },
   data() {
     return {
       courseName: '全部的',
       formLayout: {
         labelCol: { span: 4 },
-        wrapperCol: { offset: 1, span: 16 },
+        wrapperCol: { offset: 1, span: 16 }
       },
       // 高级搜索 展开/关闭
       updateModalShow: false,
       addModalShow: false,
-
-      filteredInfo: null,
-      sortedInfo: null,
 
       edit: {},
       addForm: {},
@@ -205,13 +185,11 @@ export default {
         defaultCurrent: 1,
         showSizeChanger: true,
         showQuickJumper: true,
-        pageSizeOptions: ['10', '20', '30', '40'],
+        pageSizeOptions: ['10', '20', '30', '40']
       },
       loading: true,
       // 加载数据方法 必须为 Promise 对象
-      loadData: [],
-      selectedRowKeys: [],
-      selectedRows: [],
+      loadData: []
     }
   },
   filters: {
@@ -220,7 +198,7 @@ export default {
     },
     statusTypeFilter(type) {
       return statusMap[type].status
-    },
+    }
   },
   created() {
     this.fetchData({})
@@ -232,20 +210,20 @@ export default {
     },
     async handleDelete(data) {
       await DeleteBlackIP(data)
-        .then((res) => {
+        .then(res => {
           this.$message.info(res.result)
         })
-        .catch((e) => {
+        .catch(e => {
           this.$message.error(`记录更新失败`)
         })
       this.fetchData({})
     },
     async updateSubmit(data) {
       await UpdateBlackIP(data)
-        .then((res) => {
+        .then(res => {
           this.$message.info(res.result)
         })
-        .catch((e) => {
+        .catch(e => {
           this.$message.error(`记录更新失败`)
         })
       this.updateModalShow = !this.updateModalShow
@@ -253,10 +231,10 @@ export default {
     },
     async addSubmit(data) {
       await AddBlackIP(data)
-        .then((res) => {
+        .then(res => {
           this.$message.info(res.result)
         })
-        .catch((e) => {
+        .catch(e => {
           this.$message.error(`记录添加失败`)
         })
       this.addModalShow = !this.addModalShow
@@ -266,11 +244,11 @@ export default {
       this.loading = true
       console.log(param)
       await GetBlackIPList(param)
-        .then((res) => {
+        .then(res => {
           this.loadData = res.result
           console.log(this.loadData)
         })
-        .catch((e) => {
+        .catch(e => {
           console.log(e)
           this.$message.error(`未知错误`)
         })
@@ -279,71 +257,14 @@ export default {
     handleOk() {
       this.$refs.table.refresh()
     },
-    onSelectChange(selectedRowKeys, selectedRows) {
-      this.selectedRowKeys = selectedRowKeys
-      this.selectedRows = selectedRows
-    },
     resetSearchForm() {
       this.queryParam = {
-        date: moment(new Date()),
+        date: moment(new Date())
       }
-    },
-    deleteAll() {
-      console.log(this.selectedRowKeys)
-      StudentDelete({
-        ids: this.selectedRowKeys,
-      })
-        .then((res) => {
-          console.log(res)
-          this.$message.info(`批量删除成功`)
-        })
-        .catch((e) => {
-          this.$message.error(`批量删除失败`)
-        })
-      this.selectedRowKeys = []
-      this.fetchData({})
     },
     handleChange(pagination, filters, sorter) {
       console.log('Various parameters', pagination, filters, sorter)
-      this.filteredInfo = filters
-      this.sortedInfo = sorter
-    },
-    handleExport() {
-      const data = this.loadData //表格数据
-      var option = {}
-      var dataTable = []
-      if (data) {
-        for (var i in data) {
-          if (data) {
-            var obj = {
-              编号: data[i].id,
-              课程编号: data[i].courseId,
-              课程名字: data[i].courseName,
-              专业: data[i].major,
-              班级: data[i].class,
-              学号: data[i].uid,
-              姓名: data[i].uname,
-              得分: data[i].score,
-              录入时间: data[i].signTime,
-              状态: data[i].score > 60 ? '及格' : '不及格',
-            }
-            dataTable.push(obj)
-          }
-        }
-      }
-      option.fileName = this.courseName + '成绩信息'
-      option.datas = [
-        {
-          sheetData: dataTable,
-          sheetName: 'sheet',
-          sheetFilter: ['编号', '课程编号', '课程名字', '专业', '班级', '学号', '姓名', '得分', '录入时间', '状态'],
-          sheetHeader: ['编号', '课程编号', '课程名字', '专业', '班级', '学号', '姓名', '得分', '录入时间', '状态'],
-        },
-      ]
-
-      var toExcel = new ExportJsonExcel(option)
-      toExcel.saveExcel()
-    },
-  },
+    }
+  }
 }
 </script>

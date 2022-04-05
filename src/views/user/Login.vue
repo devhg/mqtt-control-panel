@@ -23,8 +23,8 @@
                 'username',
                 {
                   rules: [{ required: true, message: '请输入帐户名或邮箱地址' }, { validator: handleUsernameOrEmail }],
-                  validateTrigger: 'change',
-                },
+                  validateTrigger: 'change'
+                }
               ]"
             >
               <a-icon slot="prefix" type="user" :style="{ color: 'rgba(0,0,0,.25)' }" />
@@ -39,7 +39,7 @@
               placeholder="密码: admin or ant.design"
               v-decorator="[
                 'password',
-                { rules: [{ required: true, message: '请输入密码' }], validateTrigger: 'blur' },
+                { rules: [{ required: true, message: '请输入密码' }], validateTrigger: 'blur' }
               ]"
             >
               <a-icon slot="prefix" type="lock" :style="{ color: 'rgba(0,0,0,.25)' }" />
@@ -56,8 +56,8 @@
                 'mobile',
                 {
                   rules: [{ required: true, pattern: /^1[34578]\d{9}$/, message: '请输入正确的手机号' }],
-                  validateTrigger: 'change',
-                },
+                  validateTrigger: 'change'
+                }
               ]"
             >
               <a-icon slot="prefix" type="mobile" :style="{ color: 'rgba(0,0,0,.25)' }" />
@@ -73,7 +73,7 @@
                   placeholder="验证码"
                   v-decorator="[
                     'captcha',
-                    { rules: [{ required: true, message: '请输入验证码' }], validateTrigger: 'blur' },
+                    { rules: [{ required: true, message: '请输入验证码' }], validateTrigger: 'blur' }
                   ]"
                 >
                   <a-icon slot="prefix" type="mail" :style="{ color: 'rgba(0,0,0,.25)' }" />
@@ -148,7 +148,7 @@ import store from '../../store'
 
 export default {
   components: {
-    TwoStepCaptcha,
+    TwoStepCaptcha
   },
   data() {
     return {
@@ -165,33 +165,11 @@ export default {
         loginBtn: false,
         // login type: 0 email, 1 username, 2 telephone
         loginType: 0,
-        smsSendBtn: false,
-      },
+        smsSendBtn: false
+      }
     }
   },
-  created() {
-    this.$notification.open({
-      message: '说明',
-      description: '本系统前端由ant-design-vue修改而来，后台由SpringBoot开发。',
-      icon: <a-icon type="smile" style="color: #108ee9" />,
-      duration: 4.5,
-      btn: (h) => {
-        return h(
-          'a-button',
-          {
-            props: {
-              type: 'primary',
-              size: 'small',
-            },
-            on: {
-              click: () => this.$notification.close(key),
-            },
-          },
-          '关闭'
-        )
-      },
-    })
-  },
+  created() {},
   methods: {
     ...mapActions(['Login', 'Logout']),
     // handler
@@ -214,7 +192,7 @@ export default {
       const {
         form: { validateFields },
         state,
-        customActiveKey,
+        customActiveKey
         // Login
       } = this
 
@@ -232,14 +210,14 @@ export default {
           loginParams.password = md5(values.password)
           console.log(loginParams.password)
           login(loginParams)
-            .then((res) => {
+            .then(res => {
               if (res.status == 200) {
                 this.loginSuccess(res)
               } else {
                 this.requestFailed(res)
               }
             })
-            .catch((err) => this.requestFailed(err))
+            .catch(err => this.requestFailed(err))
             .finally(() => {
               state.loginBtn = false
             })
@@ -254,7 +232,7 @@ export default {
       e.preventDefault()
       const {
         form: { validateFields },
-        state,
+        state
       } = this
 
       validateFields(['mobile'], { force: true }, (err, values) => {
@@ -271,15 +249,15 @@ export default {
 
           const hide = this.$message.loading('验证码发送中..', 0)
           getSmsCaptcha({ mobile: values.mobile })
-            .then((res) => {
+            .then(res => {
               setTimeout(hide, 2500)
               this.$notification['success']({
                 message: '提示',
                 description: '验证码获取成功，您的验证码为：' + res.result.captcha,
-                duration: 8,
+                duration: 8
               })
             })
-            .catch((err) => {
+            .catch(err => {
               setTimeout(hide, 1)
               clearInterval(interval)
               state.time = 60
@@ -308,7 +286,7 @@ export default {
       setTimeout(() => {
         this.$notification.success({
           message: '欢迎' + 'zgh',
-          description: `${timeFix()}，欢迎回来`,
+          description: `${timeFix()}，欢迎回来`
         })
       }, 1000)
       this.isLoginError = false
@@ -319,10 +297,10 @@ export default {
         message: '错误',
         // description: ((err.response || {}).data || {}).message || '请求出现错误，请稍后再试',
         description: '请求出现错误，请稍后再试',
-        duration: 4,
+        duration: 4
       })
-    },
-  },
+    }
+  }
 }
 </script>
 
