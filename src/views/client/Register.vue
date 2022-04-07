@@ -20,17 +20,15 @@
 
           <a-form-item v-bind="formItemLayout">
             <span slot="label">
-              客户端名称&nbsp;
-              <a-tooltip title="尽量保证唯一">
+              客户端（用户名）名称&nbsp;
+              <a-tooltip title="需要保证唯一">
                 <a-icon type="question-circle-o" />
               </a-tooltip>
             </span>
             <a-input
               v-decorator="[
                 'clientName',
-                {
-                  rules: [{ required: true, message: '请输入客户端名称', whitespace: true }]
-                }
+                { rules: [{ required: true, message: '请输入客户端（用户名）名称', whitespace: true }] }
               ]"
             />
           </a-form-item>

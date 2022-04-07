@@ -61,6 +61,7 @@
           <a-popconfirm title="暂不支持修改，建议删除后新增" ok-text="Yes" cancel-text="No">
             <a-tag>修改</a-tag>
           </a-popconfirm>
+          <a-tag color="red" @click="setClipboardText(record.clientName)">登录key</a-tag>
           <a-popconfirm title="你想删除这条记录吗？" ok-text="Yes" cancel-text="No" @confirm="handleDelete(record)">
             <a-tag color="orange">删除</a-tag>
           </a-popconfirm>
@@ -75,7 +76,7 @@ import moment from 'moment'
 import ExportJsonExcel from 'js-export-excel'
 
 import CreateForm from '@/views/list/modules/CreateForm'
-import { GetClientList, DeleteClient } from '@/api/client'
+import { GetClientList, DeleteClient, GetClientKeyByClientName } from '@/api/client'
 
 const columns = [
   { title: '记录编号', dataIndex: 'id', sorter: (a, b) => a.id - b.id },
@@ -96,7 +97,7 @@ const columns = [
   {
     title: '操作',
     dataIndex: 'action',
-    width: '150px',
+    width: '200px',
     align: 'center',
     scopedSlots: { customRender: 'action' }
   }
@@ -156,7 +157,6 @@ export default {
     },
     async fetchData(param) {
       this.loading = true
-      console.log(param)
       await GetClientList(param)
         .then(res => {
           this.loadData = res.result.data
@@ -166,6 +166,17 @@ export default {
           this.$message.error(`未知错误`)
         })
       this.loading = false
+    },
+    setClipboardText(clientName) {
+      GetClientKeyByClientName({ clientName: clientName })
+        .then(res => {
+          this.$copyText(res.result).then(e => {
+            this.$message.info('登录秘钥key Copied!')
+          })
+        })
+        .catch(e => {
+          this.$message.error(`未知错误`)
+        })
     },
     resetSearchForm() {
       this.queryParam = {

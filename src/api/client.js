@@ -10,6 +10,15 @@ export function GetClientList(parameter) {
   })
 }
 
+// 客户端 的登录key
+export function GetClientKeyByClientName(parameter) {
+  return axios({
+    url: api.ClientKey,
+    method: 'get',
+    params: parameter
+  })
+}
+
 // 客户端 添加
 export function AddClient(data) {
   return axios({

@@ -22,6 +22,7 @@ const api = {
 
   // 客户端
   ClientList: '/api/client/list',
+  ClientKey: '/api/client/loginPwd',
   ClientCreate: '/api/client/create',
   ClientUpdate: '/api/client/update',
   ClientDelete: '/api/client/delete',
