@@ -16,18 +16,9 @@ export function getTopicList(parameter) {
     params: parameter
   })
 }
-
-export function StudentAnalysisCourse(parameter) {
+export function getClusterMetrics(parameter) {
   return axios({
-    url: api.StudentAnalysisCourse,
-    method: 'get',
-    params: parameter
-  })
-}
-
-export function getUser(parameter) {
-  return axios({
-    url: api.StudentAnalysisCourse,
+    url: api.ClusterMetrics,
     method: 'get',
     params: parameter
   })

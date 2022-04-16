@@ -2,7 +2,7 @@
   <div class="page-header-index-wide">
     <a-row :gutter="24">
       <a-col :sm="24" :md="12" :xl="6" :style="{ marginBottom: '24px' }">
-        <chart-card :loading="loading" title="连接数" :total="connectionSum | NumberFormat">
+        <chart-card :loading="loading" title="连接数" :total="metrics.curConnNum | NumberFormat">
           <a-tooltip title="当前连接的数量" slot="action">
             <a-icon type="info-circle-o" />
           </a-tooltip>
@@ -17,14 +17,14 @@
             </trend>
           </div>
           <template slot="footer">
-            日均连接数
-            <span>{{ '1234' | NumberFormat }}</span>
+            最大连接数
+            <span>{{ metrics.maxConnNum | NumberFormat }}</span>
           </template>
         </chart-card>
       </a-col>
       <a-col :sm="24" :md="12" :xl="6" :style="{ marginBottom: '24px' }">
-        <chart-card :loading="loading" title="日访问量" :total="requestNum | NumberFormat">
-          <a-tooltip title="当日设备连接数量" slot="action">
+        <chart-card :loading="loading" title="日访问量" :total="metrics.reqNum | NumberFormat">
+          <a-tooltip :title="'上次访问时间 ' + metrics.lastReceiveTime" slot="action">
             <a-icon type="info-circle-o" />
           </a-tooltip>
           <div>
@@ -32,31 +32,31 @@
           </div>
           <template slot="footer">
             日均访问量
-            <span>{{ '20890' | NumberFormat }}</span>
+            <span>{{ metrics.reqAvg | NumberFormat }}</span>
           </template>
         </chart-card>
       </a-col>
       <a-col :sm="24" :md="12" :xl="6" :style="{ marginBottom: '24px' }">
-        <chart-card :loading="loading" title="报文数量" :total="packetNum | NumberFormat">
-          <a-tooltip title="指标说明" slot="action">
+        <chart-card :loading="loading" title="报文数量" :total="metrics.packetNum | NumberFormat">
+          <a-tooltip :title="'上次发送时间 ' + metrics.lastSentTime" slot="action">
             <a-icon type="info-circle-o" />
           </a-tooltip>
           <div>
             <mini-bar :data="packetCountData" />
           </div>
           <template slot="footer">
-            错误率
-            <span>0.01%</span>
+            平均报文数
+            <span>{{ metrics.packetAvg }}</span>
           </template>
         </chart-card>
       </a-col>
       <a-col :sm="24" :md="12" :xl="6" :style="{ marginBottom: '24px' }">
-        <chart-card :loading="loading" title="资源利用率" :total="loadPercent">
-          <a-tooltip title="指标说明" slot="action">
+        <chart-card :loading="loading" title="资源利用率" :total="metrics.cpu + '%'">
+          <a-tooltip title="CPU资源利用率" slot="action">
             <a-icon type="info-circle-o" />
           </a-tooltip>
           <div>
-            <mini-progress color="rgb(19, 194, 194)" :target="78" :percentage="78" height="8px" />
+            <mini-progress color="rgb(19, 194, 194)" :target="50" :percentage="parseFloat(metrics.cpu)" height="8px" />
           </div>
           <template slot="footer">
             <trend flag="down" style="margin-right: 16px">
@@ -109,7 +109,7 @@
             <a-descriptions-item label="soKeepAlive">
               <a-tag color="cyan">{{ info.soKeepAlive == true ? 'ON' : 'OFF' }}</a-tag>
             </a-descriptions-item>
-            <a-descriptions-item label="Status" :span="3">
+            <a-descriptions-item label="Status">
               <a-badge status="processing" text="运行中" />
             </a-descriptions-item>
             <a-descriptions-item label="系统信息">
@@ -129,41 +129,41 @@
 <script>
 import moment from 'moment'
 import { ChartCard, MiniArea, MiniBar, MiniProgress, Bar, Trend, NumberInfo, MiniSmoothArea } from '@/components'
-import { mixinDevice } from '@/utils/mixin'
+// import { mixinDevice } from '@/utils/mixin'
 
-import { getClusterInfo } from '@/api/manage'
+import { getClusterInfo, getClusterMetrics } from '@/api/manage'
 
-const DataSet = require('@antv/data-set')
+// const DataSet = require('@antv/data-set')
 
-const sourceData = [
-  { item: '家用电器', count: 32.2 },
-  { item: '食用酒水', count: 21 },
-  { item: '个护健康', count: 17 },
-  { item: '服饰箱包', count: 13 },
-  { item: '母婴产品', count: 9 },
-  { item: '其他', count: 7.8 }
-]
+// const sourceData = [
+//   { item: '家用电器', count: 32.2 },
+//   { item: '食用酒水', count: 21 },
+//   { item: '个护健康', count: 17 },
+//   { item: '服饰箱包', count: 13 },
+//   { item: '母婴产品', count: 9 },
+//   { item: '其他', count: 7.8 }
+// ]
 
-const pieScale = [
-  {
-    dataKey: 'percent',
-    min: 0,
-    formatter: '.0%'
-  }
-]
+// const pieScale = [
+//   {
+//     dataKey: 'percent',
+//     min: 0,
+//     formatter: '.0%'
+//   }
+// ]
 
-const dv = new DataSet.View().source(sourceData)
-dv.transform({
-  type: 'percent',
-  field: 'count',
-  dimension: 'item',
-  as: 'percent'
-})
-const pieData = dv.rows
+// const dv = new DataSet.View().source(sourceData)
+// dv.transform({
+//   type: 'percent',
+//   field: 'count',
+//   dimension: 'item',
+//   as: 'percent'
+// })
+// const pieData = dv.rows
 
 export default {
   name: 'Analysis',
-  mixins: [mixinDevice],
+  //   mixins: [mixinDevice],
   components: {
     ChartCard,
     MiniArea,
@@ -179,7 +179,7 @@ export default {
       requestNum: 23412,
       packetNum: 230412,
       connectionSum: 1678,
-      loadPercent: '78%',
+      //   loadPercent: '78%',
       loading: true,
 
       // 访问量数据
@@ -187,25 +187,41 @@ export default {
       // 报文数据
       packetCountData: [],
 
-      info: {},
-      pieScale,
-      pieData,
-      pieStyle: {
-        stroke: '#fff',
-        lineWidth: 1
-      }
+      metrics: {
+        cpu: 0
+      },
+
+      info: {}
+      //   pieScale,
+      //   pieData,
+      //   pieStyle: {
+      //     stroke: '#fff',
+      //     lineWidth: 1
+      //   }
     }
   },
-  created() {
-    this.initRequestData()
-    this.initPacketCountData()
-
-    getClusterInfo().then(res => {
-      this.info = res.result
-      this.loading = !this.loading
-    })
+  async created() {
+    this.fetchData()
+    var that = this
+    setInterval(async function() {
+      await getClusterMetrics().then(res => {
+        that.metrics = res.result
+        that.requestCountData = that.metrics.reqNumOfDays
+        that.packetCountData = that.metrics.packetNumOfDays
+        console.log(that.metrics)
+      })
+    }, 2000)
+    // this.initRequestData()
+    // this.initPacketCountData()
   },
   methods: {
+    async fetchData() {
+      await getClusterInfo().then(res => {
+        this.info = res.result
+      })
+
+      this.loading = !this.loading
+    },
     initRequestData() {
       var test = []
       const beginDay = new Date().getTime()

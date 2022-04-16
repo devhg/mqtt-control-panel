@@ -15,6 +15,7 @@ const api = {
 
   // 会话
   SessionList: '/api/session/list',
+  SessionLogout: '/api/session/logout',
 
   PacketList: '/api/packet/list',
   SystemQps: '/api/packet/qps',
@@ -27,9 +28,9 @@ const api = {
   ClientUpdate: '/api/client/update',
   ClientDelete: '/api/client/delete',
 
-  ClusterInfo: '/api/cluster/info',
   TopicList: '/api/topic/list',
-  StudentAnalysis: '/student/analysis',
-  StudentAnalysisCourse: '/student/analysis/course'
+
+  ClusterInfo: '/api/cluster/info',
+  ClusterMetrics: '/api/cluster/metrics'
 }
 export default api

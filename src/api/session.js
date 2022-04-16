@@ -6,7 +6,16 @@ export function GetSessionList(parameter) {
   return axios({
     url: api.SessionList,
     method: 'get',
-    params: parameter,
+    params: parameter
+  })
+}
+
+// 会话 下线
+export function SessionLogout(parameter) {
+  return axios({
+    url: api.SessionLogout,
+    method: 'delete',
+    params: parameter
   })
 }
 
@@ -15,7 +24,7 @@ export function AddBlackIP(data) {
   return axios({
     url: api.BlackIPCreate,
     method: 'post',
-    data: data,
+    data: data
   })
 }
 
@@ -24,7 +33,7 @@ export function DeleteBlackIP(data) {
   return axios({
     url: api.BlackIPDelete,
     method: 'delete',
-    data: data,
+    data: data
   })
 }
 
@@ -33,6 +42,6 @@ export function UpdateBlackIP(data) {
   return axios({
     url: api.BlackIPUpdate,
     method: 'post',
-    data: data,
+    data: data
   })
 }
