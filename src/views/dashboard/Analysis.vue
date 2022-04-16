@@ -72,7 +72,7 @@
       </a-col>
     </a-row>
 
-    <a-card :loading="loading" :bordered="false" :body-style="{ padding: '0' }">
+    <a-card :loading="loading" :bordered="false">
       <div class="salesCard">
         <a-card>
           <a-descriptions title="系统信息" bordered>
@@ -197,13 +197,12 @@ export default {
     }
   },
   created() {
-    this.loading = !this.loading
-
     this.initRequestData()
     this.initPacketCountData()
 
     getClusterInfo().then(res => {
       this.info = res.result
+      this.loading = !this.loading
     })
   },
   methods: {

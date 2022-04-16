@@ -1,6 +1,6 @@
 <template>
   <page-view :title="title">
-    <a-card>
+    <a-card :loading="loading">
       <a-descriptions title="系统信息" bordered>
         <a-descriptions-item label="实例id">
           {{ info.id }}
@@ -60,12 +60,14 @@ export default {
   },
   data() {
     return {
-      info: []
+      info: [],
+      loading: true
     }
   },
   created() {
     getClusterInfo().then(res => {
       this.info = res.result
+      this.loading = !this.loading
     })
   },
   methods: {},

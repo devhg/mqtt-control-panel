@@ -24,7 +24,7 @@
     <div>
       <a-row :gutter="24">
         <a-col :xl="16" :lg="24" :md="24" :sm="24" :xs="24">
-          <a-card>
+          <a-card :loading="loading">
             <a-descriptions title="用户信息" bordered>
               <a-descriptions-item label="id">
                 123
@@ -121,7 +121,7 @@ export default {
       user: {},
       teams: [],
       projects: [],
-      loading: false,
+      loading: true,
       radarLoading: true,
       activities: [
         {
@@ -184,6 +184,7 @@ export default {
 
     getClusterInfo().then(res => {
       this.info = res.result
+      this.loading = !this.loading
     })
   },
   mounted() {
