@@ -202,17 +202,17 @@ export default {
 
       validateFields(validateFieldsKey, { force: true }, (err, values) => {
         if (!err) {
-          console.log('login form', values)
+          //   console.log('login form', values)
           const loginParams = { ...values }
           delete loginParams.username
           // loginParams[!state.loginType ? 'email' : 'username'] = values.username
-          loginParams['username'] = values.username
+          loginParams.username = values.username
           loginParams.password = md5(values.password)
-          console.log(loginParams.password)
+          //   console.log(loginParams)
           login(loginParams)
             .then(res => {
-              if (res.status == 200) {
-                this.loginSuccess(res)
+              if (res.code == 0) {
+                this.loginSuccess(res.result)
               } else {
                 this.requestFailed(res)
               }
@@ -277,15 +277,14 @@ export default {
       })
     },
     loginSuccess(res) {
-      console.log(res)
       Vue.ls.set('Access-Token', res.token)
-      this.$store.commit('SET_NAME', { name: 'zgh', welcome: 'welcome' })
+      this.$store.commit('SET_NAME', { name: res.nickName, welcome: 'welcome' })
       this.$store.commit('SET_AVATAR', 'https://tvax2.sinaimg.cn/large/006nIlf0ly1gam30t0eddj31o01o0h7q.jpg')
       this.$router.push('/')
       // 延迟 1 秒显示欢迎信息
       setTimeout(() => {
         this.$notification.success({
-          message: '欢迎' + 'zgh',
+          message: '欢迎' + res.nickName,
           description: `${timeFix()}，欢迎回来`
         })
       }, 1000)
@@ -295,8 +294,8 @@ export default {
       this.isLoginError = true
       this.$notification['error']({
         message: '错误',
-        // description: ((err.response || {}).data || {}).message || '请求出现错误，请稍后再试',
-        description: '请求出现错误，请稍后再试',
+        description: ((err.response || {}).data || {}).message || err.result || '请求出现错误，请稍后再试',
+        // description: '请求出现错误，请稍后再试',
         duration: 4
       })
     }

@@ -18,7 +18,6 @@ const api = {
   SessionLogout: '/api/session/logout',
 
   PacketList: '/api/packet/list',
-  SystemQps: '/api/packet/qps',
   SystemPacketsPerSecond: '/api/packet/packets_per_second',
 
   // 客户端
@@ -31,6 +30,7 @@ const api = {
   TopicList: '/api/topic/list',
 
   ClusterInfo: '/api/cluster/info',
-  ClusterMetrics: '/api/cluster/metrics'
+  ClusterMetrics: '/api/cluster/metrics',
+  SystemQps: '/api/server/qps'
 }
 export default api

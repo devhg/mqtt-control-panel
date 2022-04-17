@@ -14,9 +14,9 @@ import { axios } from '@/utils/request'
  */
 export function login(parameter) {
   return axios({
-    url: '/auth/login',
+    url: '/api/auth/login',
     method: 'post',
-    data: parameter,
+    data: parameter
   })
 }
 
@@ -24,7 +24,7 @@ export function getSmsCaptcha(parameter) {
   return axios({
     url: api.SendSms,
     method: 'post',
-    data: parameter,
+    data: parameter
   })
 }
 
@@ -33,15 +33,15 @@ export function getInfo() {
     url: '/user/info',
     method: 'get',
     headers: {
-      'Content-Type': 'application/json;charset=UTF-8',
-    },
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
   })
 }
 
 export function getCurrentUserNav(token) {
   return axios({
     url: '/user/nav',
-    method: 'get',
+    method: 'get'
   })
 }
 
@@ -51,8 +51,8 @@ export function logout() {
     url: '/auth/logout',
     method: 'post',
     headers: {
-      'Content-Type': 'application/json;charset=UTF-8',
-    },
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
   })
 }
 
@@ -64,6 +64,6 @@ export function get2step(parameter) {
   return axios({
     url: api.twoStepCode,
     method: 'post',
-    data: parameter,
+    data: parameter
   })
 }
