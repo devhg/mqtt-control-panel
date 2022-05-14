@@ -13,8 +13,36 @@
             'email',
             {
               rules: [{ required: true, type: 'email', message: '请输入邮箱地址' }],
-              validateTrigger: ['change', 'blur'],
-            },
+              validateTrigger: ['change', 'blur']
+            }
+          ]"
+        ></a-input>
+      </a-form-item>
+
+      <a-form-item>
+        <a-input
+          size="large"
+          type="text"
+          placeholder="用户名"
+          v-decorator="[
+            'username',
+            {
+              validateTrigger: ['change', 'blur']
+            }
+          ]"
+        ></a-input>
+      </a-form-item>
+
+      <a-form-item>
+        <a-input
+          size="large"
+          type="text"
+          placeholder="昵称"
+          v-decorator="[
+            'nickName',
+            {
+              validateTrigger: ['change', 'blur']
+            }
           ]"
         ></a-input>
       </a-form-item>
@@ -22,7 +50,7 @@
       <a-popover
         placement="rightTop"
         :trigger="['focus']"
-        :getPopupContainer="(trigger) => trigger.parentElement"
+        :getPopupContainer="trigger => trigger.parentElement"
         v-model="state.passwordLevelChecked"
       >
         <template slot="content">
@@ -49,10 +77,10 @@
               {
                 rules: [
                   { required: true, message: '至少6位密码，区分大小写' },
-                  { validator: this.handlePasswordLevel },
+                  { validator: this.handlePasswordLevel }
                 ],
-                validateTrigger: ['change', 'blur'],
-              },
+                validateTrigger: ['change', 'blur']
+              }
             ]"
           ></a-input>
         </a-form-item>
@@ -68,13 +96,13 @@
             'password2',
             {
               rules: [{ required: true, message: '至少6位密码，区分大小写' }, { validator: this.handlePasswordCheck }],
-              validateTrigger: ['change', 'blur'],
-            },
+              validateTrigger: ['change', 'blur']
+            }
           ]"
         ></a-input>
       </a-form-item>
 
-      <a-form-item>
+      <!-- <a-form-item>
         <a-input
           size="large"
           placeholder="11 位手机号"
@@ -94,8 +122,8 @@
             <a-select-option value="+87">+87</a-select-option>
           </a-select>
         </a-input>
-      </a-form-item>
-      <a-row :gutter="16">
+      </a-form-item> -->
+      <!-- <a-row :gutter="16">
         <a-col class="gutter-row" :span="16">
           <a-form-item>
             <a-input
@@ -104,7 +132,7 @@
               placeholder="验证码"
               v-decorator="[
                 'captcha',
-                { rules: [{ required: true, message: '请输入验证码' }], validateTrigger: 'blur' },
+                { rules: [{ required: true, message: '请输入验证码' }], validateTrigger: 'blur' }
               ]"
             >
               <a-icon slot="prefix" type="mail" :style="{ color: 'rgba(0,0,0,.25)' }" />
@@ -120,7 +148,7 @@
             v-text="(!state.smsSendBtn && '获取验证码') || state.time + ' s'"
           ></a-button>
         </a-col>
-      </a-row>
+      </a-row> -->
 
       <a-form-item>
         <a-button
@@ -149,19 +177,19 @@ const levelNames = {
   0: '低',
   1: '低',
   2: '中',
-  3: '强',
+  3: '强'
 }
 const levelClass = {
   0: 'error',
   1: 'error',
   2: 'warning',
-  3: 'success',
+  3: 'success'
 }
 const levelColor = {
   0: '#ff0000',
   1: '#ff0000',
   2: '#ff7e05',
-  3: '#52c41a',
+  3: '#52c41a'
 }
 export default {
   name: 'Register',
@@ -177,9 +205,9 @@ export default {
         passwordLevel: 0,
         passwordLevelChecked: false,
         percent: 10,
-        progressColor: '#FF0000',
+        progressColor: '#FF0000'
       },
-      registerBtn: false,
+      registerBtn: false
     }
   },
   computed: {
@@ -191,7 +219,7 @@ export default {
     },
     passwordLevelColor() {
       return levelColor[this.state.passwordLevel]
-    },
+    }
   },
   methods: {
     handlePasswordLevel(rule, value, callback) {
@@ -256,26 +284,30 @@ export default {
       const {
         form: { validateFields },
         state,
-        $router,
+        $router
       } = this
       validateFields({ force: true }, (err, values) => {
         if (!err) {
           state.passwordLevelChecked = false
           const d = { ...values }
+          console.log(d)
           register({
-            username: d.email,
+            username: d.username,
+            email: d.email,
+            nickName: d.nickName,
             password: md5(d.password),
             mobile: d.mobile,
-            captcha: d.captcha,
+            captcha: d.captcha
           })
-            .then((res) => {
-              if (res.code == 200) {
+            .then(res => {
+              console.log(res)
+              if (res.code == 0) {
                 $router.push({ name: 'registerResult', params: { ...values } })
               } else {
                 this.$message.error('注册失败，稍后重试')
               }
             })
-            .catch((err) => this.$message.error('注册失败，稍后重试'))
+            .catch(err => this.$message.error('注册失败，稍后重试'))
           console.log({ name: 'registerResult', params: { ...values } })
           // $router.push({ name: 'registerResult', params: { ...values } })
         }
@@ -288,7 +320,7 @@ export default {
         form: { validateFields },
         state,
         $message,
-        $notification,
+        $notification
       } = this
 
       validateFields(['mobile'], { force: true }, (err, values) => {
@@ -306,15 +338,15 @@ export default {
           const hide = $message.loading('验证码发送中..', 0)
 
           getSmsCaptcha({ mobile: values.mobile })
-            .then((res) => {
+            .then(res => {
               setTimeout(hide, 2500)
               $notification['success']({
                 message: '提示',
                 description: '验证码获取成功，您的验证码为：' + res.result.captcha,
-                duration: 8,
+                duration: 8
               })
             })
-            .catch((err) => {
+            .catch(err => {
               setTimeout(hide, 1)
               clearInterval(interval)
               state.time = 60
@@ -328,16 +360,16 @@ export default {
       this.$notification['error']({
         message: '错误',
         description: ((err.response || {}).data || {}).message || '请求出现错误，请稍后再试',
-        duration: 4,
+        duration: 4
       })
       this.registerBtn = false
-    },
+    }
   },
   watch: {
     'state.passwordLevel'(val) {
       console.log(val)
-    },
-  },
+    }
+  }
 }
 </script>
 <style lang="less">
