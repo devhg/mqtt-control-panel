@@ -8,29 +8,29 @@ const api = {
   SendSmsErr: '/account/sms_err',
 
   // 黑名单
-  BlackIPList: '/api/blackip/list',
-  BlackIPCreate: '/api/blackip/create',
-  BlackIPUpdate: '/api/blackip/update',
-  BlackIPDelete: '/api/blackip/delete',
+  BlackIPList: '/blackip/list',
+  BlackIPCreate: '/blackip/create',
+  BlackIPUpdate: '/blackip/update',
+  BlackIPDelete: '/blackip/delete',
 
   // 会话
-  SessionList: '/api/session/list',
-  SessionLogout: '/api/session/logout',
+  SessionList: '/session/list',
+  SessionLogout: '/session/logout',
 
-  PacketList: '/api/packet/list',
-  SystemPacketsPerSecond: '/api/packet/packets_per_second',
+  PacketList: '/packet/list',
+  SystemPacketsPerSecond: '/packet/packets_per_second',
 
   // 客户端
-  ClientList: '/api/client/list',
-  ClientKey: '/api/client/loginPwd',
-  ClientCreate: '/api/client/create',
-  ClientUpdate: '/api/client/update',
-  ClientDelete: '/api/client/delete',
+  ClientList: '/client/list',
+  ClientKey: '/client/loginPwd',
+  ClientCreate: '/client/create',
+  ClientUpdate: '/client/update',
+  ClientDelete: '/client/delete',
 
-  TopicList: '/api/topic/list',
+  TopicList: '/topic/list',
 
-  ClusterInfo: '/api/cluster/info',
-  ClusterMetrics: '/api/cluster/metrics',
-  SystemQps: '/api/server/qps'
+  ClusterInfo: '/cluster/info',
+  ClusterMetrics: '/cluster/metrics',
+  SystemQps: '/server/qps'
 }
 export default api

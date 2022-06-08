@@ -33,12 +33,12 @@
                   <a-icon type="plus" />
                 </router-link>
               </a-button>
-              <a-popconfirm title="暂不支持导出，后续支持" ok-text="Yes" cancel-text="No">
+              <!-- <a-popconfirm title="暂不支持导出，后续支持" ok-text="Yes" cancel-text="No">
                 <a-button style="margin-left: 8px">
                   导出
                   <a-icon type="switcher" />
                 </a-button>
-              </a-popconfirm>
+              </a-popconfirm> -->
             </span>
           </a-col>
         </a-row>
@@ -81,7 +81,7 @@ import { GetClientList, DeleteClient, GetClientKeyByClientName } from '@/api/cli
 const columns = [
   { title: '记录编号', dataIndex: 'id', sorter: (a, b) => a.id - b.id },
   { title: '客户端ID', dataIndex: 'clientId' },
-  { title: '客户端名称', dataIndex: 'clientName' },
+  { title: '用户名', dataIndex: 'clientName' },
   { title: '业务线名称', dataIndex: 'groupName' },
   { title: '联系邮箱', dataIndex: 'email' },
   { title: '联系电话', dataIndex: 'phone' },
@@ -153,7 +153,7 @@ export default {
         .catch(e => {
           this.$message.error(`记录更新失败`)
         })
-      this.fetchData({})
+      this.fetchData(this.queryParam)
     },
     async fetchData(param) {
       this.loading = true

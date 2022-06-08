@@ -3,7 +3,7 @@ import { axios } from '@/utils/request'
 
 export function register(parameter) {
   return axios({
-    url: '/api/auth/register',
+    url: '/auth/register',
     method: 'post',
     data: parameter
   })

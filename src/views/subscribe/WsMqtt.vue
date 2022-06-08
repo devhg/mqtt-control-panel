@@ -48,9 +48,10 @@ const options = {
   qos: 0,
   keepalive: 20, // 心跳时间，默认 60秒，设置 0 为禁用
   clean: true, // 设置为 false 在离线时接收 QoS 1 和 2 消息
-  clientId: 'abc123wefsa234ddffefe', // 客户端Id 注册成功后返回的clientId
-  username: 'devhg', // 连接用户名 注册成功后返回的username
-  password: '1dfeefwfsfdfec3f54119fabc123' // 连接密码 注册成功后返回的password
+  clientId: 'client_3HD', // 客户端Id 注册成功后返回的clientId
+  username: 'ws', // 连接用户名 注册成功后返回的username
+  password:
+    'B8A9E4CC869C37630705F69C73B180EE3FCCC15881699AED1B7D5FF894B1CEFDEBD6C33BE13684446652064D207429CA4FB2CFD3496658B6FEE410B31697683B' // 连接密码 注册成功后返回的password
 }
 
 // ip：注册成功后返回的ip、端口：8083(非加密连接 ws:)、8084(加密连接 wss:)，此项目使用8083端口

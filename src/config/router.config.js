@@ -57,17 +57,17 @@ export const asyncRouterMap = [
           permission: ['table']
         },
         children: [
-          {
-            path: '/monitor/packet',
-            name: 'PacketMonitor',
-            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
-            component: () => import('@/views/monitor/packet/Index.vue'),
-            meta: {
-              title: '报文监控',
-              keepAlive: true,
-              permission: ['table']
-            }
-          },
+          //   {
+          //     path: '/monitor/packet',
+          //     name: 'PacketMonitor',
+          //     hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
+          //     component: () => import('@/views/monitor/packet/Index.vue'),
+          //     meta: {
+          //       title: '报文监控',
+          //       keepAlive: true,
+          //       permission: ['table']
+          //     }
+          //   },
           {
             path: '/monitor/flow',
             name: 'FlowMonitor',
@@ -77,17 +77,17 @@ export const asyncRouterMap = [
               keepAlive: false,
               title: '流量监控'
             }
-          },
-          {
-            path: '/monitor/route',
-            name: 'RouteMonitor',
-            // hidden: true,
-            component: () => import('@/views/monitor/route/Index.vue'),
-            meta: {
-              keepAlive: false,
-              title: '链路监控'
-            }
           }
+          //   {
+          //     path: '/monitor/route',
+          //     name: 'RouteMonitor',
+          //     // hidden: true,
+          //     component: () => import('@/views/monitor/route/Index.vue'),
+          //     meta: {
+          //       keepAlive: false,
+          //       title: '链路监控'
+          //     }
+          //   }
         ]
       },
       // 连接管理

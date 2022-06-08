@@ -8,7 +8,7 @@ import { ACCESS_TOKEN } from '@/store/mutation-types'
 // 创建 axios 实例
 const service = axios.create({
   // baseURL: process.env.VUE_APP_API_BASE_URL, // api base_url
-  baseURL: 'http://127.0.0.1:8000/',
+  baseURL: 'http://127.0.0.1:8922/',
   timeout: 6000 // 请求超时时间
 })
 

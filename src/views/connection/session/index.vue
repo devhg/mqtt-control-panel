@@ -96,7 +96,7 @@ export default {
     },
     async fetchData(param) {
       this.loading = true
-      await GetSessionList(param)
+      await GetSessionList()
         .then(res => {
           this.loadData = res.result
         })

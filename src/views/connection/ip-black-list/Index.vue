@@ -31,12 +31,12 @@
                 新增
                 <a-icon type="plus" />
               </a-button>
-              <a-popconfirm title="暂不支持导出，后续支持" ok-text="Yes" cancel-text="No">
+              <!-- <a-popconfirm title="暂不支持导出，后续支持" ok-text="Yes" cancel-text="No">
                 <a-button style="margin-left: 8px">
                   导出
                   <a-icon type="switcher" />
                 </a-button>
-              </a-popconfirm>
+              </a-popconfirm> -->
             </span>
           </a-col>
         </a-row>

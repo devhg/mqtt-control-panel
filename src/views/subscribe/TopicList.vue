@@ -1,49 +1,6 @@
 <template>
   <a-card :bordered="false">
-    <div class="table-page-search-wrapper">
-      <a-form layout="inline">
-        <a-row :gutter="48">
-          <a-col :md="7" :sm="24">
-            <a-form-item label="业务线">
-              <a-input placeholder="如：group.6.sdutcs.cn" v-model="queryParam.groupName" />
-            </a-form-item>
-          </a-col>
-          <a-col :md="7" :sm="24">
-            <a-form-item label="操作人">
-              <a-input placeholder="如：zhangyuan03" v-model="queryParam.opUser" />
-            </a-form-item>
-          </a-col>
-          <a-col :md="4" :sm="24">
-            <span class="table-page-search-submitButtons">
-              <a-button type="primary" @click="fetchData(queryParam)">
-                查询
-                <a-icon type="zoom-in" />
-              </a-button>
-              <a-button style="margin-left: 8px" @click="() => (queryParam = {})">
-                重置
-                <a-icon type="redo" />
-              </a-button>
-            </span>
-          </a-col>
-          <a-col :md="4" :sm="24">
-            <span class="table-page-search-submitButtons" :style="{}">
-              <a-button type="primary">
-                <router-link :to="'/client/register'">
-                  新增
-                  <a-icon type="plus" />
-                </router-link>
-              </a-button>
-              <a-popconfirm title="暂不支持导出，后续支持" ok-text="Yes" cancel-text="No">
-                <a-button style="margin-left: 8px">
-                  导出
-                  <a-icon type="switcher" />
-                </a-button>
-              </a-popconfirm>
-            </span>
-          </a-col>
-        </a-row>
-      </a-form>
-    </div>
+    <div class="table-page-search-wrapper"></div>
 
     <!-- table -->
     <a-table
